@@ -1,0 +1,6 @@
+# Define o comportamento padrão para todos os arquivos
+* text=auto eol=lf
+
+# Mantém a terminação de linha original para tipos de arquivos específicos
+*.{cmd,bat} text eol=crlf
+*.{ps1} text eol=crlf
