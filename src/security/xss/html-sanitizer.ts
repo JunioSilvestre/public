@@ -135,7 +135,7 @@ const URL_ATTRIBUTES = new Set([
  *  - zoom:expression : IE variant
  *  - binding:        : variante de -moz-binding
  *  - css-hacks       : \*//* e // comentários como bypass
- */
+*/
 const CSS_DANGEROUS_PATTERNS = [
   /expression\s*\(/gi,
   /-moz-binding/gi,
@@ -601,8 +601,8 @@ function sanitizeDownloadFilename(name: string): string {
 function sanitizeCSSValue(cssText: string): string {
   let safe = cssText;
   for (const pattern of Array.from(CSS_DANGEROUS_PATTERNS)) {
+    pattern.lastIndex = 0; // reset BEFORE test — prevents /g flag from skipping
     if (pattern.test(safe)) return '';
-    pattern.lastIndex = 0; // reset para flags global /g
   }
   return safe;
 }

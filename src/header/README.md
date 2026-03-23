@@ -2,50 +2,94 @@
 
 ## 1. Propósito
 
-O `header` é um dos módulos mais críticos da aplicação. Ele é responsável pela identidade visual (logo), navegação principal, e pontos de entrada para ações importantes como login/cadastro e troca de idioma ou tema.
+O `header` é responsável pela identidade visual, navegação principal e ações globais (login, idioma, tema). Foi construído de forma modular para ser fácil de manter e escalar.
 
-Sua complexidade justifica um módulo dedicado para garantir que a experiência seja consistente, performática e acessível em todas as páginas.
+---
 
-## 2. Estrutura
+## 2. Guia de Arquivos para Devs Júnior
 
-- **`/components`**: Componentes que compõem o cabeçalho.
-  - `Logo.tsx`: Exibe o logo da empresa, que também serve como link para a home.
-  - `NavBar.tsx` e `NavItem.tsx`: A barra de navegação principal para desktop.
-  - `MegaMenu.tsx`: Componente para menus suspensos complexos, com múltiplas colunas e links.
-  - `MobileNav.tsx` e `MobileNavToggle.tsx`: A navegação otimizada para dispositivos móveis, geralmente dentro de um menu "hambúrguer".
-  - `MarketTickerBar.tsx`: Uma barra que pode exibir cotações de mercado em tempo real, comum em sites financeiros.
-  - `AuthCtaBtn.tsx`: Botão de Call-to-Action para "Login" ou "Abrir Conta".
+Para entender a lógica, pense no Header como uma construção:
 
-- **`/hooks`**: Lógica de estado e de interação para o cabeçalho.
-  - `useScrollBehavior`: Hook que detecta a posição do scroll da página para aplicar efeitos como "cabeçalho fixo" (sticky) ou "esconder ao rolar para baixo".
-  - `useMobileNav`: Gerencia o estado de aberto/fechado do menu móvel.
-  - `useLiveTicker`: Conecta-se a um serviço (WebSocket, por exemplo) para obter os dados do `MarketTickerBar`.
+### ⚙️ Configurações e Tipos
+- **[header.config.ts](file:///c:/Projetos/Front-End/PRJ-BASE/src/header/header.config.ts)**: O "cérebro" das configurações. Define nomes de sites, URLs base e comportamentos globais.
+- **[header.tokens.ts](file:///c:/Projetos/Front-End/PRJ-BASE/src/header/header.tokens.ts)**: Onde guardamos os valores de design (cores, alturas, paddings) para não ficarem "soltos" no código.
+- **[header.types.ts](file:///c:/Projetos/Front-End/PRJ-BASE/src/header/header.types.ts)**: Define as interfaces do TypeScript. Garante que ninguém passe um dado errado por engano.
 
-- **`/data`**: Dados que alimentam a navegação, como a lista de links.
+### 🧩 Componentes (As Peças)
+Localizados na pasta `components/`, são as partes visuais:
+- **`Logo.tsx`**: Trata a imagem da marca e o link para a Home.
+- **`NavBar.tsx` / `NavItem.tsx`**: A lista de links que você vê no topo.
+- **`MegaMenu.tsx`**: Aquele menu grande que abre ao passar o mouse.
+- **`MobileNav.tsx`**: A versão do menu para celular (menu hambúrguer).
+- **`ThemeToggle.tsx`**: O botãozinho de Sol/Lua para mudar o tema.
+- **`AuthCtaBtn.tsx`**: O botão de destaque (Geralmente "Login" ou "Começar").
 
-- **`/variants`**: Diferentes estilos de cabeçalho para diferentes contextos.
-  - `Sticky.tsx`: Cabeçalho que permanece fixo no topo da página.
-  - `Transparent.tsx`: Cabeçalho com fundo transparente, para ser usado sobre uma imagem de herói, por exemplo.
+### 🧠 Hooks (A Inteligência)
+Localizados na pasta `hooks/`, guardam a lógica que não é visual:
+- **`useScrollBehavior`**: Controla quando o header deve sumir ou ficar fixo ao rolar a página.
+- **`useMobileNav`**: Controla se o menu do celular está aberto ou fechado.
+- **`useLiveTicker`**: Faz a mágica da barra de cotações se mexer com dados reais.
+
+### 🎭 Variantes (Estilos de Exibição)
+Localizados na pasta `variants/`, definem como o header se comporta na tela:
+- **`Sticky.tsx`**: Header que "gruda" no topo.
+- **`Transparent.tsx`**: Header sem fundo, usado em cima de fotos bonitas.
+- **`Minimal.tsx`**: Uma versão simplificada (ex: para páginas de checkout).
+
+### 🏠 Ponto Central
+- **[Header.tsx](file:///c:/Projetos/Front-End/PRJ-BASE/src/header/Header.tsx)**: O componente principal. Ele importa as peças (`components`), a inteligência (`hooks`) e monta o cabeçalho final.
+- **[index.tsx](file:///c:/Projetos/Front-End/PRJ-BASE/src/header/index.tsx)**: O "guichê" de exportação. Quando alguém de fora quer usar o Header, ele passa por aqui.
+
+---
 
 ## 3. Como Usar
 
-Assim como o `Footer`, o `Header` é normalmente inserido no layout principal da aplicação.
+O `Header` deve ser colocado no seu layout principal.
 
-```jsx
-// Em um arquivo de layout como /layouts/PublicLayout.tsx
+```tsx
+import { Header } from '@/header';
 
-import { Header } from '@header';
-import { Footer } from '@footer';
-
-const PublicLayout = ({ children }) => {
-  return (
-    <>
-      <Header variant="Sticky" />
-      <main>
-        {children}
-      </main>
-      <Footer />
-    </>
-  );
-};
+const MyLayout = ({ children }) => (
+  <>
+    <Header variant="Sticky" />
+    <main>{children}</main>
+  </>
+);
 ```
+
+src/header/
+├── assets/                  # Logos e recursos visuais
+│   ├── logo-dark.svg
+│   ├── logo-white.svg
+│   └── logo.svg
+├── components/              # Componentes internos do Header
+│   ├── AuthCtaBtn.tsx       # Botão de Login/Registro
+│   ├── LanguageSwitcher.tsx # Seletor de Idioma
+│   ├── Logo.tsx             # Gerenciador do Logo
+│   ├── MarketTickerBar.tsx  # Barra de cotações ao vivo
+│   ├── MegaMenu.tsx         # Menu expansível rico
+│   ├── MobileNav.tsx        # Navegação mobile
+│   ├── MobileNavToggle.tsx  # Botão hambúrguer
+│   ├── NavBar.tsx           # Barra de navegação principal
+│   ├── NavItem.tsx          # Item individual do menu
+│   └── ThemeToggle.tsx      # Alternador claro/escuro
+├── data/                    # Configurações JSON e menus
+│   ├── mega-menu.json
+│   ├── nav-links.json
+│   └── ticker-symbols.json
+├── hooks/                   # Lógica e estados reutilizáveis
+│   ├── useActiveRoute.ts
+│   ├── useLiveTicker.ts
+│   ├── useMobileNav.ts
+│   └── useScrollBehavior.ts
+├── variants/                # Versões alternativas de layout
+│   ├── Minimal.tsx
+│   ├── Sticky.tsx
+│   └── Transparent.tsx
+├── __tests__/               # Testes unitários
+├── header.config.ts         # Configurações globais do header
+├── header.tokens.ts         # Tokens de estilo (cores, espaçamentos)
+├── Header.tsx               # Componente principal unificado
+├── header.types.ts          # Interfaces e Tipos TypeScript
+├── index.tsx                # Ponto de entrada (exportação pública)
+└── README.md                # Documentação do módulo

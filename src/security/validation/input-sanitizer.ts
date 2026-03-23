@@ -1,1 +1,9 @@
-// Remove ou escapa caracteres potencialmente perigosos de inputs do usuário para prevenir ataques de injeção (XSS, etc.).
+/**
+ * @fileoverview Input Sanitizer — Ponte entre os módulos de validação e sanitização.
+ *
+ * Reexporta sanitização do módulo sanitize para manter a API consistente.
+ *
+ * @module security/validation
+ */
+
+export { sanitizeInput, sanitizeEmail, sanitizePhone, sanitizeUsername, sanitizeText } from '../sanitize/input';
