@@ -1,23 +1,78 @@
 /**
  * @arquivo     src/app/page.tsx
  * @módulo      App / Página Inicial
- * @descrição   Página raiz da aplicação (rota "/"). Renderiza apenas o componente Hero
- *              para exibição do portfólio.
- *
- * @como-usar   Acesse "/" no navegador.
+ * @descrição   Página raiz da aplicação. Inclui o Hero e seções de ancoragem
+ *              para o portfólio (About, Works, Contact).
  */
 "use client";
 
 import Hero from '@/hero';
+import Footer from '@/footer';
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-[#f5f5f5]">
+    <div className="bg-[#f5f5f5]">
+      {/* Hero section carries the id="hero" internally, but we can wrap it if needed. 
+          Actually, Hero.tsx already has id="hero". */}
       <Hero />
-      {/* Seção de rodapé ou conteúdo adicional pode ser adicionada aqui */}
-      <section className="py-20 px-10 text-center text-[#6B7280]">
-        <p>© 2024 Engenheiro de Software — Especialista em Front-End & Arquiteturas Modernas</p>
-      </section>
-    </main>
+
+      <main className="max-w-[1440px] mx-auto px-6 md:px-10">
+        
+        {/* Section: About */}
+        <section id="about" className="py-32 border-b border-black/5">
+          <div className="max-w-3xl">
+            <h2 className="text-4xl font-bold text-[#111827] mb-8 font-[family-name:var(--font-head)]">About Me</h2>
+            <p className="text-lg text-[#4B5563] leading-relaxed mb-6">
+              Experienced Software Engineer with a passion for building high-performance, accessible, and scalable web applications. 
+              My expertise lies in the React ecosystem, where I focus on clean architecture and modular design patterns.
+            </p>
+            <p className="text-lg text-[#4B5563] leading-relaxed">
+              I believe in the power of "Design Engineering" — the intersection of technical excellence and a deep understanding of user experience.
+            </p>
+          </div>
+        </section>
+
+        {/* Section: Works */}
+        <section id="works" className="py-32 border-b border-black/5">
+          <h2 className="text-4xl font-bold text-[#111827] mb-12 font-[family-name:var(--font-head)]">Selected Works</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            {/* Project Card 1 */}
+            <div className="group cursor-pointer">
+              <div className="aspect-video bg-black/5 rounded-2xl mb-6 overflow-hidden transition-transform duration-500 group-hover:scale-[1.02]">
+                {/* Image placeholder or real asset */}
+                <div className="w-full h-full flex items-center justify-center text-black/20 font-mono text-xs">PROJECT_PREVIEW_01</div>
+              </div>
+              <h3 className="text-xl font-bold text-[#111827] mb-2">HealthBridge Platform</h3>
+              <p className="text-[#6B7280]">Full-scale data visualization and claim analytics engine.</p>
+            </div>
+            
+            {/* Project Card 2 */}
+            <div className="group cursor-pointer">
+              <div className="aspect-video bg-black/5 rounded-2xl mb-6 overflow-hidden transition-transform duration-500 group-hover:scale-[1.02]">
+                <div className="w-full h-full flex items-center justify-center text-black/20 font-mono text-xs">PROJECT_PREVIEW_02</div>
+              </div>
+              <h3 className="text-xl font-bold text-[#111827] mb-2">Nexus Design System</h3>
+              <p className="text-[#6B7280]">Modern, atomic-based component library for enterprise apps.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Section: Contact */}
+        <section id="contact" className="py-32">
+          <div className="max-w-2xl text-center mx-auto">
+            <h2 className="text-4xl font-bold text-[#111827] mb-8 font-[family-name:var(--font-head)]">Ready to Build?</h2>
+            <p className="text-xl text-[#4B5563] mb-10">
+              I'm always open to discussing new projects, creative ideas or architectural challenges.
+            </p>
+            <a 
+              href="mailto:contact@engineer.js" 
+              className="inline-block bg-[#111827] text-white text-lg font-bold py-5 px-12 rounded-full hover:opacity-90 transition-opacity"
+            >
+              Get in Touch
+            </a>
+          </div>
+        </section>
+      </main>
+    </div>
   );
 }

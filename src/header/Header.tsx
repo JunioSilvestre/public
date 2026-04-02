@@ -49,7 +49,7 @@ export const Header: React.FC<HeaderProps> = ({
             className={`${styles.headerContainer} ${scrolled ? styles.scrolled : ''} ${className}`}
         >
             <div className={styles.contentWrapper}>
-                <a href="/" className={styles.logo} aria-label="Voltar para a home">
+                <a href="#hero" className={styles.logo} aria-label="Voltar para o topo">
                     {logo}
                 </a>
 

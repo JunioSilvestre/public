@@ -5,14 +5,6 @@
  *              Define a estrutura HTML global, fonte padrão (Inter), metadados
  *              de SEO e os componentes de moldura comuns a todas as páginas:
  *              Header (fixo no topo) e Footer.
- *
- * @como-usar   Este arquivo é carregado automaticamente pelo Next.js como
- *              layout global. Envolva suas páginas aninhando-as como `children`.
- *              Personalize `metadata` para ajustar título, descrição e robots.
- *
- * @dependências next/font (Inter), @/styles/globals.css, @/header, @/footer
- * @notas       - `lang="pt-BR"` deve ser configurado quando o projeto for localizado
- *              - O padding-top no <main> compensa a altura do Header fixo (72px)
  */
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -23,8 +15,8 @@ import Footer from "@/footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "PRJ-BASE | Plataforma Segura",
-  description: "Plataforma empresarial com segurança avançada e proteção multicamada.",
+  title: "Senior Software Engineer | Portfolio",
+  description: "High-performance web architectures and modern frontend engineering.",
   robots: { index: true, follow: true },
 };
 
