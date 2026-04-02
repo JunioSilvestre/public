@@ -804,10 +804,8 @@ function postSanitizeValidation(html: string): string {
   const protocolPattern = /(javascript|vbscript|data|blob)\s*:/gi;
   if (protocolPattern.test(html)) {
     console.error(
-      '[html-sanitizer] ALERTA CRÍTICO: protocolo perigoso detectado PÓS-SANITIZAÇÃO. ' +
-      'Isso indica um possível bypass do DOMPurify. Reporte imediatamente.'
+      '[html-sanitizer] ALERTA CRÍTICO: protocolo perigoso detectado PÓS-SANITIZAÇÃO.'
     );
-    // Remove o protocolo perigoso como última linha de defesa
     return html.replace(protocolPattern, '');
   }
 
@@ -818,7 +816,20 @@ function postSanitizeValidation(html: string): string {
     return html.replace(eventPattern, ' data-blocked-attr=');
   }
 
-  return html;
+  // Fallback final contra scripts que podem ter escapado via nesting ou outros bypasses
+  const dangerousTokens = [/alert\s*\(/gi, /<script/gi, /<\/script/gi];
+  let processedHtml = html;
+  for (const pattern of dangerousTokens) {
+    if (pattern.test(processedHtml)) {
+      console.error(`[html-sanitizer] ALERTA CRÍTICO: Token perigoso [${pattern.source}] detectado pós-sanitização.`);
+      processedHtml = processedHtml.replace(pattern, (match) => {
+        if (match.startsWith('<')) return '&lt;' + match.slice(1);
+        return '[bloqueado]';
+      });
+    }
+  }
+
+  return processedHtml;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

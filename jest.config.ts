@@ -22,6 +22,7 @@ const config: Config = {
     '/node_modules/',
     '^.+\.module\.(css|sass|scss)$',
   ],
+  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/', '<rootDir>/e2e/'],
 };
 
 // createJestConfig é exportado desta forma para garantir que a página em `next/jest` possa carregar a configuração do Next.js, que é assíncrona

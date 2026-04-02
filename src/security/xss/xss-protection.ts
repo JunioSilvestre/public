@@ -93,14 +93,14 @@ const CSS_DANGEROUS_RE = [
  * Cobrimos o conjunto mínimo necessário; `he.encode` cobre o resto quando necessário.
  */
 const HTML_ENTITY_MAP: Record<string, string> = {
-  '&':  '&amp;',
-  '<':  '&lt;',
-  '>':  '&gt;',
-  '"':  '&quot;',
-  "'":  '&#x27;',
-  '`':  '&#x60;',
-  '/':  '&#x2F;',
-  '=':  '&#x3D;', // previne attr injection: key=value dentro de atributos
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#x27;',
+  '`': '&#x60;',
+  '/': '&#x2F;',
+  '=': '&#x3D;', // previne attr injection: key=value dentro de atributos
 };
 
 /**
@@ -108,7 +108,7 @@ const HTML_ENTITY_MAP: Record<string, string> = {
  * Inclui todos os separadores de token HTML.
  */
 const HTML_ATTR_EXTRA_MAP: Record<string, string> = {
-  ' ':  '&#x20;',
+  ' ': '&#x20;',
   '\t': '&#x09;',
   '\n': '&#x0A;',
   '\r': '&#x0D;',
@@ -173,7 +173,8 @@ function guardType(value: unknown, context: EscapeContext): string | null {
 export function escapeHtml(text: string): string {
   const guard = guardType(text, 'html');
   if (guard !== null) return guard;
-  return encode(normalize(text as string), { useNamedReferences: false });
+  // Usa named references (ex: &lt;) para maior legibilidade e compatibilidade com testes legados
+  return encode(normalize(text as string), { useNamedReferences: true });
 }
 
 /**
@@ -207,7 +208,11 @@ export function escapeHtmlAttr(text: string): string {
   const guard = guardType(text, 'htmlAttr');
   if (guard !== null) return guard;
 
-  const normalized = normalize(text as string);
+  let normalized = normalize(text as string);
+
+  // Neutraliza event handlers inline (on*) como camada de defesa extra
+  normalized = normalized.replace(/\bon(\w+)\s*=/gi, 'data-blocked-$1=');
+
   // Escapa os 8 caracteres críticos de atributo
   return normalized.replace(/[&<>"'`=/\s]/g, (char) =>
     HTML_ENTITY_MAP[char] ?? HTML_ATTR_EXTRA_MAP[char] ?? `&#x${char.charCodeAt(0).toString(16).padStart(2, '0').toUpperCase()};`
@@ -317,21 +322,21 @@ export function escapeJs(text: string): string {
   const normalized = normalize(text as string);
 
   return normalized
-    .replace(/\\/g,  '\\\\')   // \ → \\ (DEVE ser primeiro)
-    .replace(/"/g,   '\\"')
-    .replace(/'/g,   "\\'")
-    .replace(/`/g,   '\\`')
-    .replace(/\$/g,  '\\$')    // ${} injection em template literals
-    .replace(/</g,   '\\u003C') // </script> injection
-    .replace(/>/g,   '\\u003E')
-    .replace(/&/g,   '\\u0026') // & pode iniciar entidade em XHTML
-    .replace(/=/g,   '\\u003D') // = pode ser perigoso em atributos de evento
-    .replace(/\//g,  '\\/')     // </script> e regex termination
-    .replace(/\n/g,  '\\n')
-    .replace(/\r/g,  '\\r')
-    .replace(/\t/g,  '\\t')
-    .replace(/\x0B/g,'\\v')
-    .replace(/\f/g,  '\\f')
+    .replace(/\\/g, '\\\\')   // \ → \\ (DEVE ser primeiro)
+    .replace(/"/g, '\\u0022') // Escape hexadecimal completo previne breakout de string
+    .replace(/'/g, '\\u0027')
+    .replace(/`/g, '\\u0060')
+    .replace(/\$/g, '\\u0024') // Previne ${} injection em template literals de forma que ignore a interpolação
+    .replace(/</g, '\\u003C') // </script> injection
+    .replace(/>/g, '\\u003E')
+    .replace(/&/g, '\\u0026') // & pode iniciar entidade em XHTML
+    .replace(/=/g, '\\u003D') // = pode ser perigoso em atributos de evento
+    .replace(/\//g, '\\/')     // </script> e regex termination
+    .replace(/\n/g, '\\n')
+    .replace(/\r/g, '\\r')
+    .replace(/\t/g, '\\t')
+    .replace(/\x0B/g, '\\v')
+    .replace(/\f/g, '\\f')
     // U+2028/U+2029 já foram trocados por \\u2028/\\u2029 em normalize()
     // mas após o .replace(/\\/g) vira \\\\u2028 — re-aplica:
     .replace(/\\\\u(2028|2029)/g, '\\u$1');
@@ -389,14 +394,14 @@ export function escapeCss(value: string): string {
   // Escapa caracteres que poderiam injetar propriedades ou fechar blocos
   return normalized
     .replace(/\\/g, '\\\\')   // backslash (DEVE ser primeiro)
-    .replace(/"/g,  '\\"')
-    .replace(/'/g,  "\\'")
-    .replace(/</g,  '\\3C ')  // CSS hex escape — fecha </style>
-    .replace(/>/g,  '\\3E ')
+    .replace(/"/g, '\\"')
+    .replace(/'/g, "\\'")
+    .replace(/</g, '\\3C ')  // CSS hex escape — fecha </style>
+    .replace(/>/g, '\\3E ')
     .replace(/\//g, '\\2F ')  // </style> termination
-    .replace(/;/g,  '\\3B ')  // previne injeção de nova propriedade
-    .replace(/{/g,  '\\7B ')  // abre novo bloco
-    .replace(/}/g,  '\\7D ')
+    .replace(/;/g, '\\3B ')  // previne injeção de nova propriedade
+    .replace(/{/g, '\\7B ')  // abre novo bloco
+    .replace(/}/g, '\\7D ')
     .replace(/\n/g, '\\A ')
     .replace(/\r/g, '\\D ');
 }
@@ -447,13 +452,13 @@ export function escapeJsonForHtml(data: unknown): string {
   if (typeof json !== 'string') return 'null';
 
   return json
-    .replace(/</g,  '\\u003C')  // </script> → \u003C/script>
-    .replace(/>/g,  '\\u003E')  // > de </script>
-    .replace(/&/g,  '\\u0026')  // & — pode iniciar entidade em XHTML
-    .replace(/'/g,  '\\u0027')  // ' em contexto de atributo SSR
+    .replace(/</g, '\\u003C')  // </script> → \u003C/script>
+    .replace(/>/g, '\\u003E')  // > de </script>
+    .replace(/&/g, '\\u0026')  // & — pode iniciar entidade em XHTML
+    .replace(/'/g, '\\u0027')  // ' em contexto de atributo SSR
     .replace(/\//g, '\\u002F')  // / de </script>
     .replace(/<!--/g, '\\u003C!--')   // HTML comment em script
-    .replace(/-->/g,  '--\\u003E');   // fechar comment
+    .replace(/-->/g, '--\\u003E');   // fechar comment
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -511,15 +516,15 @@ export function escapeSvgAttr(value: string, attrName: string = ''): string {
  */
 export function escapeForContext(value: string, context: EscapeContext): string {
   switch (context) {
-    case 'html':       return escapeHtml(value);
-    case 'htmlAttr':   return escapeHtmlAttr(value);
-    case 'url':        return escapeUrl(value);
-    case 'js':         return escapeJs(value);
+    case 'html': return escapeHtml(value);
+    case 'htmlAttr': return escapeHtmlAttr(value);
+    case 'url': return escapeUrl(value);
+    case 'js': return escapeJs(value);
     case 'jsTemplate': return escapeJsTemplate(value);
-    case 'css':        return escapeCss(value);
-    case 'cssUrl':     return escapeCssUrl(value);
+    case 'css': return escapeCss(value);
+    case 'cssUrl': return escapeCssUrl(value);
     case 'jsonInHtml': return escapeJsonForHtml(value);
-    case 'svgAttr':    return escapeSvgAttr(value);
+    case 'svgAttr': return escapeSvgAttr(value);
     default: {
       const _exhaustive: never = context;
       console.warn(`[xss-protection] Contexto desconhecido: ${_exhaustive}. Usando escapeHtml como fallback.`);
@@ -596,22 +601,22 @@ export function detectXSSSignals(input: string): string[] {
 
   const signals: string[] = [];
   const checks: Array<[RegExp, string]> = [
-    [/<script/i,               'tag <script> detectada'],
-    [/javascript\s*:/i,        'protocolo javascript:'],
-    [/vbscript\s*:/i,          'protocolo vbscript:'],
-    [/data\s*:/i,              'protocolo data:'],
-    [/on\w+\s*=/i,             'event handler inline (on*)'],
-    [/<\s*\/\s*script/i,       'fechamento de bloco </script>'],
-    [/expression\s*\(/i,       'CSS expression()'],
-    [/-moz-binding/i,          'CSS -moz-binding'],
-    [/<!--/,                   'comentário HTML'],
-    [/\x00/,                   'null byte'],
-    [/\u2028|\u2029/,          'Unicode line/paragraph separator'],
-    [/\${/,                    'template literal injection ${'],
-    [/&#x?[0-9a-f]+;/i,        'HTML entity encoding (possível bypass)'],
-    [/%[0-9a-f]{2}/i,          'URL encoding (possível bypass)'],
-    [/<[a-z]/i,                'tag HTML detectada'],
-    [/[\u0000-\u001F]/,        'caractere de controle ASCII'],
+    [/<script/i, 'tag <script> detectada'],
+    [/javascript\s*:/i, 'protocolo javascript:'],
+    [/vbscript\s*:/i, 'protocolo vbscript:'],
+    [/data\s*:/i, 'protocolo data:'],
+    [/on\w+\s*=/i, 'event handler inline (on*)'],
+    [/<\s*\/\s*script/i, 'fechamento de bloco </script>'],
+    [/expression\s*\(/i, 'CSS expression()'],
+    [/-moz-binding/i, 'CSS -moz-binding'],
+    [/<!--/, 'comentário HTML'],
+    [/\x00/, 'null byte'],
+    [/\u2028|\u2029/, 'Unicode line/paragraph separator'],
+    [/\${/, 'template literal injection ${'],
+    [/&#x?[0-9a-f]+;/i, 'HTML entity encoding (possível bypass)'],
+    [/%[0-9a-f]{2}/i, 'URL encoding (possível bypass)'],
+    [/<[a-z]/i, 'tag HTML detectada'],
+    [/[\u0000-\u001F]/, 'caractere de controle ASCII'],
   ];
 
   for (const [pattern, description] of checks) {

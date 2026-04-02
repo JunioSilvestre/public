@@ -1,10 +1,17 @@
 /**
- * @fileoverview Security Module — Ponto de entrada principal para todos os módulos de segurança.
+ * @arquivo     src/security/index.ts
+ * @módulo      Security / Índice Principal
+ * @descrição   Ponto de entrada centralizado para todos os módulos de segurança do PRJ-BASE.
+ *              Reexporta as APIs de: XSS, CSRF, Sanitização, Validação,
+ *              Proteção de Dados, Segurança de API e Security Headers.
  *
- * Importações centralizadas para o sistema de segurança do PRJ-BASE.
- * Use este arquivo para acessar todas as APIs de segurança.
+ * @como-usar   import { sanitizeHtml, validateEmail, createSecureFetch } from '@/security';
  *
- * @module security
+ * @dependências Todos os submódulos de src/security/
+ * @notas       Importe sempre por este arquivo — não acesse submódulos diretamente
+ *              para garantir que as APIs públicas sejam estáveis.
+ *
+ * @módulo security
  */
 
 // ── XSS Protection ──────────────────────────────────────────────────────────

@@ -1,4 +1,23 @@
 /**
+ * @arquivo     src/security/middleware/csrfProtection.ts
+ * @módulo      Security / Middleware / Proteção CSRF
+ * @descrição   Middleware de proteção CSRF (Cross-Site Request Forgery) com múltiplas
+ *              estratégias: Synchronizer Token, Double Submit Cookie e Signed Double Submit.
+ *              Inclui comparação timing-safe, geração criptograficamente segura e store injetável.
+ *
+ * @como-usar
+ *              const csrf = new CSRFProtection({ strategy: 'signed-double-submit', secret: process.env.CSRF_SECRET });
+ *              // Gera token (endpoint GET):
+ *              const { token, cookieHeader } = await csrf.generateToken(sessionId);
+ *              // Valida (endpoint POST/PUT/PATCH/DELETE):
+ *              const result = await csrf.validate(req);
+ *              if (!result.valid) return respond403(result.reason);
+ *
+ * @dependências next/server, Web Crypto API (Node.js 15+)
+ * @notas       ⚠ CSRF_SECRET mínimo recomendado: 32 bytes (256 bits).
+ *              Use variável de ambiente: process.env.CSRF_SECRET.
+ */
+/**
  * @fileoverview Middleware de proteção CSRF — Cross-Site Request Forgery.
  *
  * @description

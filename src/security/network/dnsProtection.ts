@@ -1,26 +1,24 @@
 /**
- * dnsProtection.ts
+ * @arquivo     src/security/network/dnsProtection.ts
+ * @módulo      Security / Network / Proteção DNS
+ * @descrição   Proteção abrangente contra ataques e abusos relacionados a DNS.
+ *              Vetores cobertos: DNS Rebinding, Host Header Injection, DNS Tunneling,
+ *              Subdomain Takeover, Open Redirect via host, SSRF, Homograph/IDN,
+ *              DNS Cache Poisoning, Wildcard DNS Abuse, Punycode/IDN Spoofing,
+ *              Dangling DNS, DNS over HTTPS (DoH) fingerprinting.
  *
- * Proteção abrangente contra ataques e abusos relacionados a DNS em aplicações Next.js.
+ * @como-usar
+ *              // Verificar host de uma requisição:
+ *              const result = checkHost(request.headers.get('host'), { allowedHosts: ['meusite.com'] });
+ *              if (!result.ok) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+ *              // Middleware completo:
+ *              const response = await dnsProtectionMiddleware(request, { canonicalDomain: 'meusite.com' });
+ *              if (response) return response;
  *
- * Vetores cobertos:
- *  - DNS Rebinding Attack
- *  - Host Header Injection / Poisoning
- *  - DNS Tunneling (detecção de exfiltração via DNS)
- *  - Subdomain Takeover (fingerprint de serviços vulneráveis)
- *  - Open Redirect via manipulação de host
- *  - SSRF via resolução de hostname interno
- *  - Homograph/IDN Homoglyph Attack (domínios unicode enganosos)
- *  - DNS Cache Poisoning (validação de respostas)
- *  - Wildcard DNS Abuse
- *  - Punycode / IDN spoofing
- *  - Dangling DNS (registros apontando para recursos inexistentes)
- *  - DNS over HTTPS (DoH) fingerprinting
- *  - Amplitude analysis para detecção de tunneling
+ * @dependências next/server, requestSanitizer.ts, rateLimiter.ts
+ * @notas       Integra-se com requestSanitizer.ts, rateLimiter.ts, authGuard.ts e csrfProtection.ts.
  *
- * Integra-se com: requestSanitizer.ts, rateLimiter.ts, authGuard.ts, csrfProtection.ts
- *
- * @module security/dnsProtection
+ * @módulo security/dnsProtection
  */
 
 import { NextRequest, NextResponse } from "next/server";

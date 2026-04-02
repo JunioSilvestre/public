@@ -1,4 +1,25 @@
 /**
+ * @arquivo     src/security/middleware/botProtection.ts
+ * @módulo      Security / Middleware / Proteção contra Bots
+ * @descrição   Middleware de defesa em profundidade contra tráfego automatizado.
+ *              Implementa 10 camadas de detecção: Rate Limiting (janela deslizante),
+ *              Token Bucket, Fingerprint, User-Agent, Behavioral, Honeypot,
+ *              Request Anomaly, Headless Detection, Geo/IP Reputation e Challenge.
+ *
+ * @como-usar
+ *              // Express
+ *              app.use(createExpressAdapter(botProtection));
+ *              // Next.js middleware
+ *              export default createNextAdapter(botProtection);
+ *              // Custom
+ *              const result = await botProtection.evaluate(request);
+ *              if (!result.allowed) return respond403(result.reason);
+ *
+ * @dependências next/server, MemoryStore (dev) ou Redis (produção)
+ * @notas       ⚠ Nunca exponha `result.reason` diretamente ao cliente.
+ *              Use MemoryStore apenas em desenvolvimento — em produção injete Redis.
+ */
+/**
  * @fileoverview Middleware de proteção contra bots — defesa em profundidade.
  *
  * @description

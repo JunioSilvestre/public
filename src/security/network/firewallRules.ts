@@ -1,28 +1,25 @@
 /**
- * firewallRules.ts
+ * @arquivo     src/security/network/firewallRules.ts
+ * @módulo      Security / Network / Regras de Firewall (WAF)
+ * @descrição   Firewall de aplicação (WAF) para Next.js com engine de regras declarativas.
+ *              Responsabilidades: filtragem por IP/CIDR/ASN/país, proteção contra bots,
+ *              detecção de scanners, bloqueio de paths sensíveis, method tampering,
+ *              rate limiting estrutural, detecção de enumeração, bloqueio de Tor nodes,
+ *              score de risco acumulativo e suporte a regras customizadas.
  *
- * Firewall de aplicação (WAF) para Next.js — camada de inspeção e filtragem
- * de requisições baseada em regras declarativas e heurísticas comportamentais.
+ * @como-usar
+ *              const firewall = new ApplicationFirewall({ mode: 'enforce', blockedIPs: [...] });
+ *              const result = await firewall.evaluate(request);
+ *              if (!result.ok) return buildFirewallResponse(result);
+ *              // Middleware completo:
+ *              const response = await firewallMiddleware(request, options);
+ *              if (response) return response;
  *
- * Responsabilidades:
- *  - Engine de regras declarativas (allow / deny / challenge / log)
- *  - Filtragem por IP, CIDR, ASN, país (geo-blocking)
- *  - Proteção contra bots maliciosos e scrapers (User-Agent analysis)
- *  - Detecção de scanners de vulnerabilidade (Nikto, sqlmap, Burp, Nuclei…)
- *  - Bloqueio de path/endpoint sensível
- *  - Proteção contra HTTP method tampering
- *  - Rate limiting estrutural por regra (token bucket por IP)
- *  - Detecção de ataques de enumeração (sequência de 4xx)
- *  - Bloqueio de Tor exit nodes e proxies anônimos conhecidos
- *  - Proteção de rotas administrativas
- *  - Score de risco acumulativo por requisição
- *  - Suporte a regras customizadas via configuração
- *  - Pipeline de execução com short-circuit e prioridade
+ * @dependências next/server, requestSanitizer.ts, dnsProtection.ts, rateLimiter.ts
+ * @notas       O modo 'audit' registra violações sem bloquear.
+ *              Use 'enforce' em produção.
  *
- * Integra-se com: requestSanitizer.ts, dnsProtection.ts, rateLimiter.ts,
- *                 authGuard.ts, csrfProtection.ts
- *
- * @module security/firewallRules
+ * @módulo security/firewallRules
  */
 
 import { NextRequest, NextResponse } from "next/server";

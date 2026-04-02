@@ -1,18 +1,23 @@
 /**
- * requestSanitizer.ts
+ * @arquivo     src/security/middleware/requestSanitizer.ts
+ * @módulo      Security / Middleware / Sanitizador de Requisições
+ * @descrição   Camada de sanitização e validação de requisições HTTP para Next.js.
+ *              Protege contra: XSS, SQL Injection, Path Traversal, NoSQL Injection,
+ *              SSTI, Command Injection, LDAP Injection e CRLF em headers.
+ *              Totalmente stateless e sem efeitos colaterais externos.
  *
- * Camada de sanitização e validação de requisições HTTP para Next.js.
- * Responsabilidades:
- *  - Sanitização de strings (XSS, SQL Injection, path traversal)
- *  - Validação e normalização de headers
- *  - Limitação de tamanho de payload
- *  - Detecção de padrões maliciosos
- *  - Sanitização de parâmetros de query e body
+ * @como-usar
+ *              // Uso direto:
+ *              const result = await sanitizeRequest(req, options);
+ *              if (!result.ok) return NextResponse.json(result.error, { status: 400 });
+ *              // Wrapper conveniente:
+ *              return withSanitizedRequest(req, async (sanitized) => { ... });
  *
- * Arquitetura: este módulo é stateless e puro — sem efeitos colaterais externos.
- * Integra-se com: rateLimiter.ts, authGuard.ts, csrfProtection.ts (futuros módulos).
+ * @dependências next/server (NextRequest, NextResponse)
+ * @notas       Em produção nunca exponha `result.error.details` ao cliente.
+ *              strictMode: true por padrão (recomendado).
  *
- * @module security/requestSanitizer
+ * @módulo security/requestSanitizer
  */
 
 import { NextRequest, NextResponse } from "next/server";

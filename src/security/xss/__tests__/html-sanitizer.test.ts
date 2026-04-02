@@ -35,8 +35,8 @@ function expectNone(result: string, forbidden: string[]): void {
 
 /** Supprime console.warn/error produzidos intencionalmente pelo módulo durante testes. */
 const silence = () => {
-  jest.spyOn(console, 'warn').mockImplementation(() => {});
-  jest.spyOn(console, 'error').mockImplementation(() => {});
+  jest.spyOn(console, 'warn').mockImplementation(() => { });
+  jest.spyOn(console, 'error').mockImplementation(() => { });
 };
 
 beforeEach(() => silence());

@@ -1,4 +1,22 @@
 /**
+ * @arquivo     src/security/middleware/ipFilter.ts
+ * @módulo      Security / Middleware / Filtro de IP
+ * @descrição   Middleware de filtragem de IP com controle de acesso multicamada e
+ *              inteligência adaptativa. Implementa 10 camadas de detecção: Allowlist,
+ *              Blocklist permanente, Blocklist dinâmica, Reputação de IP, Tor exit nodes,
+ *              VPN/Proxy detection, Datacenter ASNs, CIDR privado/bogon,
+ *              Rate de novas conexões e Behavioral scoring.
+ *
+ * @como-usar
+ *              const filter = new IPFilter({ allowedCIDRs: ['10.0.0.0/8'], blockTor: true });
+ *              const result = await filter.evaluate(request);
+ *              if (!result.allowed) return respond403(result.reason);
+ *
+ * @dependências next/server, MemoryStore (dev) ou Redis (produção)
+ * @notas       ⚠ Nunca bloqueie VPNs por padrão (muitos usuários legítimos as usam).
+ *              Use blockVPN: true apenas quando estritamente necessário.
+ */
+/**
  * @fileoverview Middleware de filtragem de IP — controle de acesso multicamada.
  *
  * @description

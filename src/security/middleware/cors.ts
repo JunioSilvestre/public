@@ -1,4 +1,22 @@
 /**
+ * @arquivo     src/security/middleware/cors.ts
+ * @módulo      Security / Middleware / CORS
+ * @descrição   Middleware CORS (Cross-Origin Resource Sharing) seguro e configurável.
+ *              Implementa a spec CORS (RFC 6454 + Fetch Living Standard) com foco em
+ *              segurança por padrão: nega tudo e permite apenas o explicitamente configurado.
+ *
+ * @como-usar
+ *              // Express:
+ *              app.use(createExpressCORS(corsMiddleware));
+ *              // Next.js:
+ *              const cors = createNextCORS(corsMiddleware);
+ *              export default function middleware(req) { return cors(req) ?? NextResponse.next(); }
+ *
+ * @dependências next/server
+ * @notas       ⚠ NUNCA usar allowedOrigins: ['*'] com credentials: true.
+ *              Use createPrivateAPICORS() para APIs com autenticação.
+ */
+/**
  * @fileoverview Middleware CORS — Cross-Origin Resource Sharing seguro e configurável.
  *
  * @description
