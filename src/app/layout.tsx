@@ -1,16 +1,9 @@
-/**
- * @arquivo     src/app/layout.tsx
- * @módulo      App / Layout Raiz
- * @descrição   Layout raiz da aplicação Next.js (App Router).
- *              Define a estrutura HTML global, fonte padrão (Inter), metadados
- *              de SEO e os componentes de moldura comuns a todas as páginas:
- *              Header (fixo no topo) e Footer.
- */
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import Header from "@/header";
 import Footer from "@/footer";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,10 +20,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+      </head>
       <body className={inter.className}>
         <Header />
         <main style={{ paddingTop: '72px' }}>{children}</main>
         <Footer />
+        <Script 
+          src="https://unpkg.com/feather-icons" 
+          strategy="afterInteractive" 
+        />
       </body>
     </html>
   );

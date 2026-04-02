@@ -8,12 +8,12 @@
 
 import Hero from '@/hero';
 import Footer from '@/footer';
+import Contact from '@/contact';
 
 export default function HomePage() {
   return (
     <div className="bg-[#f5f5f5]">
-      {/* Hero section carries the id="hero" internally, but we can wrap it if needed. 
-          Actually, Hero.tsx already has id="hero". */}
+      {/* Hero section carries the id="hero" internally */}
       <Hero />
 
       <main className="max-w-[1440px] mx-auto px-6 md:px-10">
@@ -39,7 +39,6 @@ export default function HomePage() {
             {/* Project Card 1 */}
             <div className="group cursor-pointer">
               <div className="aspect-video bg-black/5 rounded-2xl mb-6 overflow-hidden transition-transform duration-500 group-hover:scale-[1.02]">
-                {/* Image placeholder or real asset */}
                 <div className="w-full h-full flex items-center justify-center text-black/20 font-mono text-xs">PROJECT_PREVIEW_01</div>
               </div>
               <h3 className="text-xl font-bold text-[#111827] mb-2">HealthBridge Platform</h3>
@@ -58,20 +57,7 @@ export default function HomePage() {
         </section>
 
         {/* Section: Contact */}
-        <section id="contact" className="py-32">
-          <div className="max-w-2xl text-center mx-auto">
-            <h2 className="text-4xl font-bold text-[#111827] mb-8 font-[family-name:var(--font-head)]">Ready to Build?</h2>
-            <p className="text-xl text-[#4B5563] mb-10">
-              I'm always open to discussing new projects, creative ideas or architectural challenges.
-            </p>
-            <a 
-              href="mailto:contact@engineer.js" 
-              className="inline-block bg-[#111827] text-white text-lg font-bold py-5 px-12 rounded-full hover:opacity-90 transition-opacity"
-            >
-              Get in Touch
-            </a>
-          </div>
-        </section>
+        <Contact />
       </main>
     </div>
   );

@@ -28,10 +28,10 @@ export interface CSPDirectives {
 
 const DEFAULT_CSP: CSPDirectives = {
     'default-src': ["'self'"],
-    'script-src': ["'self'", "'unsafe-eval'", "'unsafe-inline'", 'https://www.google.com', 'https://www.gstatic.com', 'https://challenges.cloudflare.com'],
-    'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+    'script-src': ["'self'", "'unsafe-eval'", "'unsafe-inline'", 'https://www.google.com', 'https://www.gstatic.com', 'https://challenges.cloudflare.com', 'https://unpkg.com'],
+    'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdnjs.cloudflare.com'],
     'img-src': ["'self'", 'data:', 'https:', 'blob:'],
-    'font-src': ["'self'", 'https://fonts.gstatic.com'],
+    'font-src': ["'self'", 'https://fonts.gstatic.com', 'https://cdnjs.cloudflare.com'],
     'connect-src': ["'self'", 'https:', 'wss:'],
     'frame-src': ["'self'", 'https://www.google.com', 'https://challenges.cloudflare.com'],
     'frame-ancestors': ["'none'"],
