@@ -42,11 +42,25 @@
 }
 
 .socialLink:hover {
-    color: #111827;
     background-color: #fff;
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     border-color: rgba(0, 0, 0, 0.1);
+}
+
+.socialLink[data-platform="instagram"]:hover {
+    color: #E4405F;
+    border-color: rgba(228, 64, 95, 0.2);
+}
+
+.socialLink[data-platform="github"]:hover {
+    color: #24292e;
+    border-color: rgba(36, 41, 46, 0.2);
+}
+
+.socialLink[data-platform="linkedin"]:hover {
+    color: #0077b5;
+    border-color: rgba(0, 119, 181, 0.2);
 }
 
 /* ── Seção de Copyright ── */

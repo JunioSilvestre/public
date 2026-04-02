@@ -28,6 +28,7 @@ export const FooterSocial: React.FC<FooterSocialProps> = ({ links }) => {
                     key={social.id}
                     href={social.href}
                     className={styles.socialLink}
+                    data-platform={social.id}
                     aria-label={social.label}
                     target="_blank"
                     rel="noopener noreferrer"

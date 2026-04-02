@@ -84,17 +84,24 @@ export const Contact: React.FC = () => {
             ))}
           </div>
 
-          {/* Redes Sociais */}
           <div className={styles.socialBox}>
-            <p className={styles.socialLabel}>Ou me encontre em:</p>
+            <p className={styles.socialLabel}>Conecte-se comigo</p>
             <div className={styles.socialLinks}>
               {CONTACT_CONFIG.socials.map((social, i) => (
-                <a key={i} href={social.href} className={styles.socialIcon} title={social.name}>
+                <a 
+                  key={i} 
+                  href={social.href} 
+                  className={styles.socialIcon} 
+                  title={social.name}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <i className={social.icon}></i>
                 </a>
               ))}
             </div>
           </div>
+
         </div>
 
         {/* Lado Direito - Formulário */}

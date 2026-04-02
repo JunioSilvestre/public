@@ -4,7 +4,9 @@
  * @descrição   Dados de contato e labels para a seção de formulário.
  */
 
-export const CONTACT_CONFIG = {
+import { ContactConfig } from './contact.types';
+
+export const CONTACT_CONFIG: ContactConfig = {
   title: "Vamos conversar?",
   description: "Tem um projeto em mente, uma dúvida ou quer bater um papo? Estou à disposição para te ajudar.",
   info: {
