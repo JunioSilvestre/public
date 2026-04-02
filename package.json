@@ -14,7 +14,9 @@
   "dependencies": {
     "@types/dompurify": "^3.0.5",
     "@types/he": "^1.2.3",
+    "chart.js": "^4.5.1",
     "dompurify": "^3.3.3",
+    "gsap": "^3.14.2",
     "he": "^1.2.0",
     "next": "14.2.1",
     "react": "^18",
@@ -24,6 +26,7 @@
     "@playwright/test": "^1.42.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^14.0.0",
+    "@types/gsap": "^1.20.2",
     "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/react": "^18",
