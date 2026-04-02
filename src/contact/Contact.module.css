@@ -13,7 +13,7 @@
     max-width: 1100px;
     margin: 0 auto;
     display: grid;
-    grid-template-cols: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 64px;
     align-items: center;
 }
