@@ -1,7 +1,7 @@
 /**
- * @arquivo     src/about/About.tsx
- * @módulo      About / Componente
- * @descrição   Seção "About Me" adaptada do design HTML original.
+ * @file        src/about/About.tsx
+ * @module      About / Component
+ * @description "About Me" section adapted from the original HTML design.
  */
 "use client";
 
@@ -24,42 +24,42 @@ const About: React.FC = () => {
     {
       id: 'ui-ux',
       title: 'Interfaces & UX',
-      description: 'Desenvolvimento de UIs pixel-perfect (Figma) focadas em usabilidade, acessibilidade (A11y) e experiências intuitivas.',
+      description: 'Pixel-perfect UI development (Figma) focused on usability, accessibility (A11y), and intuitive experiences.',
       icon: <Palette className="w-6 h-6" />,
       colorClass: 'bg-cyan-50 text-cyan-600',
     },
     {
       id: 'stack',
-      title: 'Frameworks & Arquitetura',
-      description: 'Domínio de React, Next.js e TypeScript para criar componentes modulares, reutilizáveis e escaláveis.',
+      title: 'Frameworks & Architecture',
+      description: 'Expertise in React, Next.js, and TypeScript to create modular, reusable, and scalable components.',
       icon: <Layers className="w-6 h-6" />,
       colorClass: 'bg-indigo-50 text-indigo-600',
     },
     {
       id: 'perf',
-      title: 'Otimização & Performance',
-      description: 'Foco em Core Web Vitals, Lazy Loading e Code Splitting para garantir velocidade máxima de carregamento.',
+      title: 'Optimization & Performance',
+      description: 'Focused on Core Web Vitals, Lazy Loading, and Code Splitting to ensure maximum load speed.',
       icon: <Zap className="w-6 h-6" />,
       colorClass: 'bg-emerald-50 text-emerald-600',
     },
     {
       id: 'integration',
-      title: 'Integração & Estado',
-      description: 'Consumo de APIs complexas e gerenciamento de estado global eficiente (Zustand, Redux ou Context API).',
+      title: 'Integration & State',
+      description: 'Consuming complex APIs and efficient global state management (Zustand, Redux, or Context API).',
       icon: <ArrowLeftRight className="w-6 h-6" />,
       colorClass: 'bg-orange-50 text-orange-600',
     },
     {
       id: 'quality',
-      title: 'Testes & Refatoração',
-      description: 'Garantia de estabilidade via testes unitários (Jest/RTL) e manutenção constante da qualidade do código.',
+      title: 'Testing & Refactoring',
+      description: 'Ensuring stability via unit testing (Jest/RTL) and constant maintenance of code quality.',
       icon: <ShieldCheck className="w-6 h-6" />,
       colorClass: 'bg-red-50 text-red-600',
     },
     {
       id: 'ecosystem',
-      title: 'Ambiente & DevOps',
-      description: 'Configuração de tooling moderno (Vite, ESLint), versionamento Git e colaboração via Metodologias Ágeis.',
+      title: 'Environment & DevOps',
+      description: 'Configuration of modern tooling (Vite, ESLint), Git versioning, and collaboration via Agile Methodologies.',
       icon: <Settings className="w-6 h-6" />,
       colorClass: 'bg-slate-50 text-slate-600',
     },
@@ -70,13 +70,13 @@ const About: React.FC = () => {
       {/* Header & Intro */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
         
-        {/* Coluna Foto */}
+        {/* Photo Column */}
         <div className="lg:col-span-5">
           <div className={styles.photoFrame}>
             <div className="aspect-[4/5] rounded-3xl overflow-hidden bg-slate-200 border-4 border-white shadow-2xl relative">
               <Image 
                 src="/assets/images/about/ju.jpg" 
-                alt="Sua Foto" 
+                alt="Your Photo" 
                 fill
                 className="object-cover grayscale hover:grayscale-0 transition duration-700" 
               />
@@ -97,33 +97,33 @@ const About: React.FC = () => {
           </div>
         </div>
 
-        {/* Texto de Impacto */}
+        {/* Impact Text */}
         <div className="lg:col-span-7 flex flex-col justify-center">
           <h2 className="text-indigo-600 font-bold uppercase tracking-[0.3em] text-xs mb-4">Software Engineer</h2>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-[1.1] mb-8">
-            Engenheiro de Software especializado em <span className={styles.textGradient}>Front-End</span>.
+            Software Engineer specializing in <span className={styles.textGradient}>Front-End</span>.
           </h1>
           <p className="text-xl text-slate-600 font-medium mb-6">
-            Transformo arquiteturas complexas em interfaces elegantes, fluidas e de alta performance, unindo
-            rigor técnico com excelência visual.
+            I transform complex architectures into elegant, fluid, and high-performance interfaces, combining
+            technical rigor with visual excellence.
           </p>
           <div className="flex gap-6 mt-4">
             <div className="flex items-center gap-2">
               <span className="w-10 h-[2px] bg-slate-300"></span>
               <span className="text-slate-400 text-sm font-semibold uppercase tracking-widest leading-none">
-                Comprometido com a qualidade
+                Committed to quality
               </span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Responsabilidades (Grid das Funções) */}
+      {/* Responsibilities (Grid) */}
       <div className="space-y-10">
         <div className="text-center max-w-2xl mx-auto">
-          <h3 className="text-2xl font-bold text-slate-900 mb-4">Domínios de Atuação</h3>
+          <h3 className="text-2xl font-bold text-slate-900 mb-4">Expertise Domains</h3>
           <p className="text-slate-500">
-            Minha atuação abrange todo o ciclo de vida do Front-End, do design à infraestrutura de desenvolvimento.
+            My work covers the entire Front-End lifecycle, from design to development infrastructure.
           </p>
         </div>
 
@@ -142,26 +142,6 @@ const About: React.FC = () => {
         </div>
       </div>
 
-      {/* Footer Call */}
-      <div className="mt-20 p-8 rounded-3xl bg-white border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-8">
-        <div className="flex items-center gap-6">
-          <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-indigo-500 rounded-full flex items-center justify-center text-white shadow-lg">
-            <Rocket className="w-8 h-8" />
-          </div>
-          <div>
-            <p className="text-slate-900 font-bold text-lg leading-tight">
-              Pronto para elevar o nível do seu projeto?
-            </p>
-            <p className="text-slate-500 text-sm">Expertise técnica e olhar refinado para o Front-End.</p>
-          </div>
-        </div>
-        <a 
-          href="#contact"
-          className="w-full md:w-auto px-10 py-4 bg-slate-900 text-white rounded-2xl font-bold hover:bg-slate-800 transition-all text-center"
-        >
-          Vamos Conversar
-        </a>
-      </div>
     </section>
   );
 };

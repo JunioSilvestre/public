@@ -1,30 +1,30 @@
 /**
- * @arquivo     src/contact/contact.config.ts
- * @módulo      Contact / Configuração
- * @descrição   Dados de contato e labels para a seção de formulário.
+ * @file        src/contact/contact.config.ts
+ * @module      Contact / Configuration
+ * @description Contact data and labels for the form section.
  */
 
 import { ContactConfig } from './contact.types';
 
 export const CONTACT_CONFIG: ContactConfig = {
-  title: "Vamos conversar?",
-  description: "Tem um projeto em mente, uma dúvida ou quer bater um papo? Estou à disposição para te ajudar.",
+  title: "Let's talk?",
+  description: "Have a project in mind, a question, or just want to chat? I'm available to help you.",
   info: {
     email: {
       label: "Email",
-      value: "seuemail@exemplo.com",
-      href: "mailto:seuemail@exemplo.com",
+      value: "youremail@example.com",
+      href: "mailto:youremail@example.com",
       icon: "mail"
     },
     phone: {
-      label: "Telefone / WhatsApp",
-      value: "(11) 99999-9999",
-      href: "tel:+5511999999999",
+      label: "Phone / WhatsApp",
+      value: "+1 (555) 000-0000",
+      href: "tel:+15550000000",
       icon: "phone"
     },
     location: {
-      label: "Localização",
-      value: "São Paulo, Brasil",
+      label: "Location",
+      value: "New York, NY",
       icon: "map-pin"
     }
   },
@@ -35,14 +35,14 @@ export const CONTACT_CONFIG: ContactConfig = {
   ],
   form: {
     fields: {
-      name: { label: "Seu nome", placeholder: "João Silva" },
-      email: { label: "Seu email", placeholder: "voce@exemplo.com" },
-      message: { label: "Mensagem", placeholder: "Me conte sobre seu projeto..." }
+      name: { label: "Your name", placeholder: "John Doe" },
+      email: { label: "Your email", placeholder: "you@example.com" },
+      message: { label: "Message", placeholder: "Tell me about your project..." }
     },
-    submitLabel: "Enviar mensagem",
+    submitLabel: "Send Message",
     successMsg: {
-      title: "Mensagem enviada com sucesso!",
-      sub: "Entrarei em contato em breve. Obrigado!"
+      title: "Message sent successfully!",
+      sub: "I'll get back to you shortly. Thank you!"
     }
   }
 };

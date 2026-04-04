@@ -1,9 +1,9 @@
 "use client";
 
 /**
- * @arquivo     src/contact/Contact.tsx
- * @módulo      Contact / Componente Principal
- * @descrição   Seção de contato interativa com formulário e informações de suporte.
+ * @file        src/contact/Contact.tsx
+ * @module      Contact / Main Component
+ * @description Interactive contact section with a form and support information.
  */
 
 import React, { useState, useEffect } from 'react';
@@ -14,7 +14,7 @@ export const Contact: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Inicializa Feather Icons se disponível
+  // Initialize Feather Icons if available
   useEffect(() => {
     const replaceIcons = () => {
       // @ts-ignore
@@ -25,9 +25,9 @@ export const Contact: React.FC = () => {
     };
 
     replaceIcons();
-    // Re-tenta após um curto atraso para garantir que o script CDN carregou
+    // Retry after a short delay to ensure CDN script loaded
     const timer = setTimeout(replaceIcons, 1000);
-    const interval = setInterval(replaceIcons, 3000); // Intervalo extra de segurança
+    const interval = setInterval(replaceIcons, 3000); // Extra safety interval
     
     return () => {
       clearTimeout(timer);
@@ -39,12 +39,12 @@ export const Contact: React.FC = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulação de envio
+    // Submission simulation
     setTimeout(() => {
       setIsLoading(false);
       setIsSubmitted(true);
 
-      // Resetar após 6 segundos
+      // Reset after 6 seconds
       setTimeout(() => {
         setIsSubmitted(false);
       }, 6000);
@@ -55,7 +55,7 @@ export const Contact: React.FC = () => {
     <section id="contact" className={styles.section}>
       <div className={styles.container}>
         
-        {/* Lado Esquerdo - Informações */}
+        {/* Left Side - Information */}
         <div className={styles.infoSide}>
           <div>
             <h2 className={styles.title}>
@@ -85,7 +85,7 @@ export const Contact: React.FC = () => {
           </div>
 
           <div className={styles.socialBox}>
-            <p className={styles.socialLabel}>Conecte-se comigo</p>
+            <p className={styles.socialLabel}>Connect with me</p>
             <div className={styles.socialLinks}>
               {CONTACT_CONFIG.socials.map((social, i) => (
                 <a 
@@ -104,7 +104,7 @@ export const Contact: React.FC = () => {
 
         </div>
 
-        {/* Lado Direito - Formulário */}
+        {/* Right Side - Form */}
         <div className={styles.card}>
           <form 
             onSubmit={handleSubmit} 
@@ -145,7 +145,7 @@ export const Contact: React.FC = () => {
               className={styles.submitBtn}
             >
               {isLoading ? (
-                <span>Enviando...</span>
+                <span>Sending...</span>
               ) : (
                 <>
                   <span>{CONTACT_CONFIG.form.submitLabel}</span>
@@ -155,7 +155,7 @@ export const Contact: React.FC = () => {
             </button>
           </form>
 
-          {/* Mensagem de sucesso */}
+          {/* Success Message */}
           <div className={`${styles.success} ${!isSubmitted ? styles.hidden : ''}`}>
              <div className={styles.successIcon}>
                <i data-feather="check-circle" className="w-16 h-16 mx-auto"></i>

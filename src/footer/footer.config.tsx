@@ -1,23 +1,23 @@
 /**
- * @arquivo     src/footer/footer.config.tsx
- * @módulo      Footer / Configuração
- * @descrição   Configuração centralizada de conteúdo do rodapé. Define os links
- *              de redes sociais padrão (com ícones SVG inline) e o texto de
- *              copyright padrão utilizado pelo componente Footer.
+ * @file        src/footer/footer.config.tsx
+ * @module      Footer / Configuration
+ * @description Centralized footer content configuration. Defines the
+ *              default social media links (with inline SVG icons) and the
+ *              default copyright text used by the Footer component.
  *
- * @como-usar   import { FALLBACK_SOCIAL_LINKS, FOOTER_CONFIG } from './footer.config';
- *              // Passe via prop ou use como padrão: <Footer socialLinks={FALLBACK_SOCIAL_LINKS} />
+ * @usage       import { FALLBACK_SOCIAL_LINKS, FOOTER_CONFIG } from './footer.config';
+ *              // Pass via prop or use as default: <Footer socialLinks={FALLBACK_SOCIAL_LINKS} />
  *
- * @dependências ./footer.types (SocialLink), React (para JSX dos SVG icons)
- * @notas       Atualize FALLBACK_SOCIAL_LINKS com URLs reais de perfis sociais
- *              antes de ir para produção.
+ * @dependencies ./footer.types (SocialLink), React (for icon SVGs)
+ * @notes       Update FALLBACK_SOCIAL_LINKS with real social profiles URLs
+ *              before going to production.
  */
 
 import React from 'react';
 import { SocialLink } from './footer.types';
 
 /**
- * Links de redes sociais padrão com ícones SVG.
+ * Default social media links with SVG icons.
  */
 export const FALLBACK_SOCIAL_LINKS: SocialLink[] = [
     {
@@ -57,5 +57,5 @@ export const FALLBACK_SOCIAL_LINKS: SocialLink[] = [
 ];
 
 export const FOOTER_CONFIG = {
-    copyright: "Todos os direitos reservados.",
+    copyright: "All rights reserved.",
 };

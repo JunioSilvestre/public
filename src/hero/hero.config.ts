@@ -1,8 +1,8 @@
 /**
- * @arquivo     src/hero/hero.config.ts
- * @módulo      Hero / Configuração
- * @descrição   Dados de conteúdo para o Hero Portfólio.
- *              Atualizado com os textos solicitados em Inglês.
+ * @file        src/hero/hero.config.ts
+ * @module      Hero / Configuration
+ * @description Content data for the Portfolio Hero section.
+ *              Updated with the requested English texts.
  */
 import { MarketItem, NetworkItem, TickerItem, StatItem } from './hero.types';
 

@@ -1,15 +1,15 @@
 /**
- * @arquivo     src/header/header.config.ts
- * @módulo      Header / Configuração
- * @descrição   Configuração do componente Header para o Portfólio.
- *              Inclui links para About, Works, Contact e o botão Get Started.
+ * @file        src/header/header.config.ts
+ * @module      Header / Configuration
+ * @description Header component configuration for the Portfolio.
+ *              Includes links for About, Works, Contact, and the Get Started button.
  */
 
 import { NavLink } from './header.types';
 
 /**
- * Links de navegação padrão do header.
- * Ajustado para âncoras na mesma página (Smooth Scroll).
+ * Default navigation links in the header.
+ * Adjusted for anchor links (Smooth Scroll).
  */
 export const HEADER_LINKS: NavLink[] = [
     { id: '1', label: 'About', href: '#about' },
@@ -19,13 +19,13 @@ export const HEADER_LINKS: NavLink[] = [
 ];
 
 /**
- * Configuração geral do Header.
+ * Global Header configuration.
  */
 export const HEADER_CONFIG = {
-    /** Nome da marca exibido no logotipo. */
+    /** Brand name displayed in the logo. */
     logoText: 'JS',
-    /** Largura de tela em pixels abaixo da qual o layout mobile é ativado. */
+    /** Screen width in pixels below which the mobile layout is activated. */
     breakpoint: 768,
-    /** Altura base do header. */
+    /** Base height of the header. */
     height: '72px',
 };

@@ -1,17 +1,10 @@
 /**
- * @arquivo     src/header/components/MobileHeader.tsx
- * @módulo      Header / Componente Mobile
- * @descrição   Componente de navegação específico para mobile com menu overlay.
- *              Inclui o botão hamburger (animável para ×) e o painel de navegação
- *              de tela cheia que desliza de cima para baixo. Suporta fechamento
- *              via tecla Escape (gerenciado no hook `useHeader`).
- *
- * @como-usar   Renderizado automaticamente pelo Header em resoluções ≤ 768px.
- *              <MobileHeader links={links} isOpen={isMenuOpen} toggleMenu={toggleMenu} onClose={closeMenu} />
- *
- * @dependências ../header.types (NavLink), ../hooks/useActiveRoute, ../Header.module.css
- * @notas       O overlay usa `position: fixed` e bloqueia o scroll do body quando aberto.
- *              A acessibilidade é gerenciada via `aria-expanded` e `aria-hidden`.
+ * @file        src/header/components/MobileHeader.tsx
+ * @module      Header / Mobile Component
+ * @description Mobile-specific navigation component with overlay menu.
+ *              Includes the hamburger button (animatable to ×) and the
+ *              full-screen navigation panel that slides down. Supports closing
+ *              via Escape key (managed in the `useHeader` hook).
  */
 
 import React from 'react';
@@ -20,24 +13,19 @@ import { useActiveRoute } from '../hooks/useActiveRoute';
 import styles from '../Header.module.css';
 
 interface MobileHeaderProps {
-    /** Links de navegação a exibir no menu. */
+    /** Navigation links to display in the menu. */
     links: NavLink[];
-    /** Define se o menu mobile está visível. */
+    /** Defines whether the mobile menu is visible. */
     isOpen: boolean;
-    /** Callback para alternar (abrir/fechar) o estado do menu. */
+    /** Callback to toggle (open/close) the menu state. */
     toggleMenu: () => void;
-    /** Callback para fechar o menu (geralmente ao clicar em um link). */
+    /** Callback to close the menu (usually when clicking a link). */
     onClose: () => void;
 }
 
 /**
- * Componente MobileHeader.
- * Inclui o toggle hamburger e um menu em overlay de tela cheia.
- *
- * @param links      - Array de objetos de link de navegação.
- * @param isOpen     - Estado de visibilidade do menu.
- * @param toggleMenu - Handler para alternar o menu.
- * @param onClose    - Handler para fechar o menu (chamado ao clicar em um link).
+ * MobileHeader Component.
+ * Includes the hamburger toggle and a full-screen overlay menu.
  */
 export const MobileHeader: React.FC<MobileHeaderProps> = ({
     links,
@@ -52,7 +40,7 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
             <button
                 className={`${styles.mobileToggle} ${isOpen ? styles.mobileToggleOpen : ''}`}
                 onClick={toggleMenu}
-                aria-label={isOpen ? "Fechar menu" : "Abrir menu"}
+                aria-label={isOpen ? "Close menu" : "Open menu"}
                 aria-expanded={isOpen}
                 aria-controls="mobile-navigation-menu"
             >

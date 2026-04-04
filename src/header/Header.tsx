@@ -1,23 +1,20 @@
 /**
- * @arquivo     src/header/Header.tsx
- * @módulo      Header / Componente Principal
- * @descrição   Componente de cabeçalho responsivo principal do PRJ-BASE.
- *              Orquestra o logotipo, os links de navegação e os layouts
- *              separados para desktop e mobile. Gerencia estado de scroll
- *              e abertura/fechamento do menu mobile via `useHeader`.
+ * @file        src/header/Header.tsx
+ * @module      Header / Main Component
+ * @description Responsive header component for the portfolio.
+ *              Orchestrates the logo, navigation links, and the
+ *              different layouts for desktop and mobile. Manages scroll
+ *              state and mobile menu toggle via `useHeader`.
  *
- * @como-usar
+ * @usage
  *              import Header from '@/header';
- *              // No layout:
+ *              // In layout:
  *              <Header />
- *              // Com customização:
- *              <Header logo="MEU LOGO" links={linksCustomizados} />
+ *              // Optional customization:
+ *              <Header logo="MY LOGO" links={customLinks} />
  *
- * @dependências ./header.config, ./hooks/useHeader, ./components/DesktopHeader,
+ * @dependencies ./header.config, ./hooks/useHeader, ./components/DesktopHeader,
  *              ./components/MobileHeader, ./Header.module.css, ./header.types
- * @notas       O componente é "use client" pois depende de hooks de estado e
- *              eventos do browser (scroll, keyboard). O header é `position: fixed`
- *              — garanta que o conteúdo abaixo tenha padding-top equivalente.
  */
 "use client";
 
@@ -49,7 +46,7 @@ export const Header: React.FC<HeaderProps> = ({
             className={`${styles.headerContainer} ${scrolled ? styles.scrolled : ''} ${className}`}
         >
             <div className={styles.contentWrapper}>
-                <a href="#hero" className={styles.logo} aria-label="Voltar para o topo">
+                <a href="#hero" className={styles.logo} aria-label="Back to top">
                     {logo}
                 </a>
 

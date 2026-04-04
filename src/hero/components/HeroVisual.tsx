@@ -1,7 +1,7 @@
 /**
- * @arquivo     src/hero/components/HeroVisual.tsx
- * @módulo      Hero / Visual
- * @descrição   Lado direito do Hero HealthBridge (Mercados, Gráficos, Cobertura).
+ * @file        src/hero/components/HeroVisual.tsx
+ * @module      Hero / Visual
+ * @description Right side of the Hero section (Technologies, Charts, Architecture).
  */
 import React, { useState, useEffect } from 'react';
 import styles from '../Hero.module.css';
@@ -23,7 +23,7 @@ export const HeroVisual: React.FC = () => {
     <div className={`${styles.rightCol} animate-right`}>
       {/* Market Data */}
       <div className={styles.cardPanel}>
-        <div className={styles.cardTitle}>Tecnologias · Versões Atuais</div>
+        <div className={styles.cardTitle}>Technologies · Current Versions</div>
         <div className={styles.marketList}>
           {HERO_CONFIG.marketData.map((data, i) => (
             <div key={data.sym} className={styles.marketItem}>
@@ -45,7 +45,7 @@ export const HeroVisual: React.FC = () => {
 
       {/* Sparkline Chart */}
       <div className={styles.cardPanel}>
-        <div className={styles.cardTitle}>Performance · 30 Dias</div>
+        <div className={styles.cardTitle}>Performance · Last 30 Days</div>
         <div className={styles.chartWrap}>
           <canvas ref={chartRef}></canvas>
         </div>
@@ -53,7 +53,7 @@ export const HeroVisual: React.FC = () => {
 
       {/* Network Coverage */}
       <div className={styles.cardPanel}>
-        <div className={styles.cardTitle}>Arquitetura & Otimização</div>
+        <div className={styles.cardTitle}>Architecture & Optimization</div>
         <div className={styles.networkGrid}>
           {HERO_CONFIG.networkCoverage.map((net, i) => (
             <div key={i} className={styles.netItem}>
