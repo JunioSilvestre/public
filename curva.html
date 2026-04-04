@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Efeito de Curva - Tons Subtis</title>
+    <style>
+        /* Ajuste para tonalidades mais subtis e suaves */
+        :root {
+            --fundo-geral: #fafafa;
+            /* Cinza quase branco (Topo) */
+            --cor-arco: #f2f2f2;
+            /* Cinza muito suave (Meio) */
+            --cor-terceira: #ececec;
+            /* Cinza suave (Base) */
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--fundo-geral);
+        }
+
+        /* Secção 1: Topo */
+        .top-section {
+            background-color: var(--fundo-geral);
+            height: 40vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            text-align: center;
+        }
+
+        /* Secção 2: Meio */
+        .middle-section {
+            background-color: var(--cor-arco);
+            min-height: 40vh;
+            padding: 80px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            text-align: center;
+            color: #888;
+        }
+
+        /* Secção 3: Base */
+        .third-section {
+            background-color: var(--cor-terceira);
+            min-height: 40vh;
+            padding: 80px 40px;
+            text-align: center;
+            color: #777;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Contentor base para as curvas */
+        .curve-container {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            bottom: 0;
+        }
+
+        /* Inversão para a esquerda na segunda curva */
+        .curve-left {
+            transform: scaleX(-1);
+        }
+
+        .curve-container svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 100px;
+        }
+
+        /* Preenchimento das cores nos SVGs */
+        .fill-cor-arco {
+            fill: var(--cor-arco);
+        }
+
+        .fill-cor-terceira {
+            fill: var(--cor-terceira);
+        }
+
+        h1 {
+            color: #444;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Secção 1: Superior -->
+    <div class="top-section">
+        <h1>Design Minimalista</h1>
+
+        <!-- Arco para a Direita (Original) -->
+        <div class="curve-container">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,0V120H1200V0C1014.2,95,684.5,123.8,475.8,42.6,350.6,3,149.9,3,0,0Z" class="fill-cor-arco">
+                </path>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Secção 2: Intermédia -->
+    <div class="middle-section">
+        <p>Conteúdo da secção intermédia (Tons Suaves).</p>
+
+        <!-- Arco para a Esquerda (Invertido horizontalmente) -->
+        <div class="curve-container curve-left">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,0V120H1200V0C1014.2,95,684.5,123.8,475.8,42.6,350.6,3,149.9,3,0,0Z"
+                    class="fill-cor-terceira"></path>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Secção 3: Inferior -->
+    <div class="third-section">
+        <p>Esta é a terceira secção com transição fluida e cores subtis.</p>
+    </div>
+
+</body>
+
+</html>

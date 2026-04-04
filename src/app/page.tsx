@@ -9,6 +9,7 @@
 import Hero from '@/hero';
 import Footer from '@/footer';
 import Contact from '@/contact';
+import About from '@/about';
 
 export default function HomePage() {
   return (
@@ -19,18 +20,9 @@ export default function HomePage() {
       <main className="max-w-[1440px] mx-auto px-6 md:px-10">
         
         {/* Section: About */}
-        <section id="about" className="py-32 border-b border-black/5">
-          <div className="max-w-3xl">
-            <h2 className="text-4xl font-bold text-[#111827] mb-8 font-[family-name:var(--font-head)]">About Me</h2>
-            <p className="text-lg text-[#4B5563] leading-relaxed mb-6">
-              Experienced Software Engineer with a passion for building high-performance, accessible, and scalable web applications. 
-              My expertise lies in the React ecosystem, where I focus on clean architecture and modular design patterns.
-            </p>
-            <p className="text-lg text-[#4B5563] leading-relaxed">
-              I believe in the power of "Design Engineering" — the intersection of technical excellence and a deep understanding of user experience.
-            </p>
-          </div>
-        </section>
+        <About />
+
+        {/* Section: Works */}
 
         {/* Section: Works */}
         <section id="works" className="py-32 border-b border-black/5">
