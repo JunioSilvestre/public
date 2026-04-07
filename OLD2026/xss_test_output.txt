@@ -1,0 +1,537 @@
+
+> prj-base@0.1.0 test
+> jest src/security/xss/__tests__/xss-protection.test.ts --verbose
+
+FAIL src/security/xss/__tests__/xss-protection.test.ts
+  escapeHtml
+    guards de tipo
+      √ deve retornar string vazia para null (3 ms)
+      √ deve retornar string vazia para undefined
+      √ deve converter número em string escapada (1 ms)
+      √ deve retornar string vazia para string vazia
+    happy path
+      √ deve preservar texto alfanumérico sem alteração
+      √ deve preservar acentos e caracteres UTF-8 normais (1 ms)
+    escape de caracteres críticos
+      √ deve escapar < para entidade
+      √ deve escapar > para entidade
+      × deve escapar & para entidade (1 ms)
+      √ deve escapar aspas duplas (1 ms)
+      √ deve escapar aspas simples
+    vetores de ataque HTML
+      √ deve bloquear tag <script>
+      × deve bloquear <img onerror> (1 ms)
+      × deve bloquear injeção de tag aninhada (1 ms)
+      √ deve remover null bytes antes de escapar
+      √ deve escapar U+2028 (Line Separator) que quebra parsers JS
+      √ deve escapar U+2029 (Paragraph Separator)
+    escapeText — alias de compatibilidade
+      √ deve ser idêntico a escapeHtml
+      √ deve retornar string vazia para null
+  escapeHtmlAttr
+    guards de tipo
+      √ deve retornar string vazia para null
+      √ deve retornar string vazia para undefined (1 ms)
+    happy path
+      √ deve preservar texto alfanumérico puro
+    breakout de atributo via aspas
+      × deve escapar aspas duplas que fechariam o atributo
+      × deve escapar aspas simples que fechariam atributo com quotes simples
+      √ deve escapar backtick (fecha template literal em contexto de attr)
+    breakout de atributo não-quotado via espaço
+      √ deve escapar espaços que separariam tokens HTML (1 ms)
+      √ deve escapar tabs
+      √ deve escapar newline
+    injeção de atributo via = e /
+      √ deve escapar = que permitiria injetar key=value
+      √ deve escapar / que poderia fechar a tag (1 ms)
+    vetores clássicos
+      × deve neutralizar payload completo de breakout
+      √ deve escapar null bytes
+  escapeUrl
+    guards de tipo
+      √ deve retornar string vazia para null
+      √ deve retornar string vazia para undefined
+    URLs legítimas preservadas
+      √ deve preservar URL https completa (1 ms)
+      √ deve preservar URL http (1 ms)
+      √ deve preservar URL relativa /path
+      √ deve preservar âncora #section
+      √ deve preservar URL relativa ./arquivo
+      √ deve preservar mailto: (1 ms)
+      √ deve preservar tel:
+    bloqueio de protocolos perigosos
+      √ deve bloquear "javascript:alert(1)" (1 ms)
+      √ deve bloquear "JAVASCRIPT:alert(1)"
+      √ deve bloquear "JavaScript:alert(1)"
+      √ deve bloquear "vbscript:msgbox(1)"
+      √ deve bloquear "data:text/html,<script>alert(1)</script>" (1 ms)
+      √ deve bloquear "data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg=="
+      √ deve bloquear "blob:https://evil.com/uuid" (3 ms)
+      √ deve bloquear "filesystem:https://evil.com/file"
+    bypasses de encoding
+      √ deve bloquear javascript: URL-encoded (%6a%61...)
+      √ deve bloquear javascript: com espaços antes
+      √ deve bloquear javascript: com \n embutido (bypass IE) (1 ms)
+      √ deve bloquear javascript: via entidade numérica &#106;
+      √ deve bloquear javascript: uppercase com null byte
+    injeção embutida em URL relativa
+      √ deve bloquear /path/javascript:alert embutido
+  escapeJs
+    guards de tipo
+      √ deve retornar string vazia para null (1 ms)
+      √ deve retornar string vazia para undefined
+    happy path
+      √ deve preservar texto alfanumérico
+    breakout de string JS via aspas
+      × deve escapar aspas duplas que fechariam a string
+      × deve escapar aspas simples
+      √ deve escapar backslash ANTES de outros escapes (ordem crítica)
+    fechamento de bloco <script>
+      √ deve bloquear </script> que fecha o bloco mesmo dentro de string
+      √ deve bloquear < e > via \u003C/\u003E
+    HTML comment injection em <script>
+      √ deve neutralizar <!-- que IE tratava como comentário em <script>
+    template literal injection
+      × deve escapar backtick que fecha template literal (1 ms)
+      × deve escapar ${ que injeta expressão em template literal
+    U+2028 / U+2029 — line terminators em JS < ES2019
+      √ deve converter U+2028 em escape literal \u2028
+      √ deve converter U+2029 em escape literal \u2029
+    quebras de linha e caracteres de controle
+      √ deve escapar \n em \n literal
+      √ deve escapar \r em \r literal (1 ms)
+      √ deve escapar \t em \t literal
+      √ deve remover null bytes
+    escapeJsTemplate — alias semântico
+      √ deve produzir output idêntico ao escapeJs
+      × deve escapar ${ em template literal
+  escapeCss
+    guards de tipo
+      √ deve retornar string vazia para null
+      √ deve retornar string vazia para undefined
+    happy path
+      √ deve preservar valor CSS seguro (cor) (1 ms)
+      √ deve preservar valor hex de cor
+    bloqueio de padrões CSS perigosos
+      √ deve retornar string vazia para "expression(alert(1))"
+      √ deve retornar string vazia para "EXPRESSION(alert(1))"
+      √ deve retornar string vazia para "-moz-binding:url(http://evil.com/xss.xml#xss)"
+      √ deve retornar string vazia para "behavior: url(evil.htc)"
+      √ deve retornar string vazia para "url(javascript:alert(1))"
+      √ deve retornar string vazia para "url('javascript:alert(1)')"
+      √ deve retornar string vazia para "@import url(http://evil.com/steal.css)"
+      √ deve retornar string vazia para "binding: url(evil.htc)" (1 ms)
+    escape de caracteres de injeção CSS
+      √ deve escapar ; que injetaria nova propriedade
+      √ deve escapar { que abriria novo bloco CSS
+      √ deve escapar } que fecharia bloco CSS
+      √ deve escapar < que fecharia bloco </style>
+      √ deve escapar backslash antes dos outros (ordem crítica) (1 ms)
+      √ deve escapar \n em escape CSS
+  escapeCssUrl
+    √ deve bloquear javascript: em url()
+    √ deve bloquear data: em url()
+    √ deve permitir URL https válida (1 ms)
+    √ deve retornar about:blank para URL bloqueada (# → about:blank)
+    √ deve retornar string vazia para null → about:blank
+  escapeJsonForHtml
+    happy path
+      √ deve serializar objeto simples (1 ms)
+      √ deve serializar array
+      √ deve retornar "null" para undefined (JSON.stringify behavior)
+    fechamento de bloco </script> — CVE-2018-14732 pattern
+      √ deve escapar </script> que fecha o bloco script no browser
+      √ deve escapar / de </script> como \u002F
+      √ deve escapar < como \u003C
+      √ deve escapar > como \u003E
+    HTML comment injection em <script>
+      √ deve escapar <!-- que IE interpretava como comentário em script
+      √ deve escapar --> que fecha comentário HTML em script
+    & e ' em contexto XHTML
+      √ deve escapar & como \u0026 (1 ms)
+      √ deve escapar aspas simples como \u0027
+    estruturas complexas
+      √ deve escapar payload em array aninhado
+      √ deve escapar payload em objeto aninhado
+      √ deve manter booleanos e números intactos (1 ms)
+  escapeSvgAttr
+    guards de tipo
+      √ deve retornar string vazia para null
+      √ deve retornar string vazia para undefined
+    atributos não-URL — aplica escapeHtmlAttr
+      √ deve escapar aspas em atributo fill
+      √ deve escapar < em atributo qualquer
+    atributos de URL — aplica validação de protocolo
+      √ deve bloquear javascript: em href (2 ms)
+      √ deve bloquear javascript: em xlink:href (bypass histórico)
+      √ deve bloquear javascript: em src
+      √ deve bloquear data: em data
+      √ deve permitir URL https em href
+      √ deve permitir href interno (#id) — uso legítimo de <use>
+    sem attrName — comportamento default
+      × deve aplicar escapeHtmlAttr para atributo sem nome (1 ms)
+  escapeForContext
+    √ contexto "html" deve bloquear payload perigoso
+    √ contexto "htmlAttr" deve bloquear payload perigoso
+    √ contexto "js" deve bloquear payload perigoso (1 ms)
+    × contexto "jsTemplate" deve bloquear payload perigoso
+    √ contexto "css" deve bloquear payload perigoso (1 ms)
+    √ contexto "jsonInHtml" deve bloquear payload perigoso
+    √ contexto "svgAttr" deve bloquear payload perigoso
+    √ contexto "url" deve bloquear javascript:
+    √ contexto "cssUrl" deve bloquear javascript:
+    √ deve delegar corretamente cada contexto à função especializada (1 ms)
+  safeHtml
+    × deve escapar valores interpolados mas preservar HTML estático
+    × deve escapar múltiplos valores na mesma template (1 ms)
+    √ deve tratar null como string vazia
+    √ deve tratar undefined como string vazia
+    √ deve converter número em string escapada (1 ms)
+    √ deve produzir template sem interpolações idêntica à string estática
+  safeAttr
+    × deve escapar valores interpolados em atributos
+    × deve escapar múltiplos atributos na mesma template (1 ms)
+    √ deve tratar null como string vazia
+  detectXSSSignals
+    √ deve retornar array vazio para string segura (1 ms)
+    √ deve detectar tag <script>
+    √ deve detectar protocolo javascript: (1 ms)
+    √ deve detectar event handler inline on*=
+    √ deve detectar </script> (fechamento de bloco)
+    √ deve detectar expression() CSS
+    √ deve detectar null byte
+    √ deve detectar U+2028/U+2029 (1 ms)
+    √ deve detectar URL encoding %XX
+    √ deve detectar entity encoding &#
+    √ deve detectar template literal ${
+    √ deve retornar array vazio para input não-string
+    √ deve detectar múltiplos sinais no mesmo payload
+  runEscapeTests
+    × deve retornar array vazio em ambiente saudável (zero falhas) (1 ms)
+    √ deve retornar array de strings quando há falhas simuladas (1 ms)
+  Normalização Unicode (NFC)
+    √ escapeHtml deve normalizar NFC antes de escapar
+    √ escapeJs deve normalizar NFC e remover U+2028/U+2029
+
+  ● escapeHtml › escape de caracteres críticos › deve escapar & para entidade
+
+    expect(received).toContain(expected) // indexOf
+
+    Expected substring: "amp"
+    Received string:    "&#x26;"
+
+    [0m [90m 101 |[39m     it([32m'deve escapar & para entidade'[39m[33m,[39m () [33m=>[39m {
+     [90m 102 |[39m       expect(escapeHtml([32m'&'[39m))[33m.[39mnot[33m.[39mtoContain([32m'&amp;'[39m[33m.[39mslice([35m1[39m))[33m;[39m [90m// garante que não sobra &[39m
+    [31m[1m>[22m[39m[90m 103 |[39m       expect(escapeHtml([32m'&'[39m))[33m.[39mtoContain([32m'amp'[39m)[33m;[39m
+     [90m     |[39m                               [31m[1m^[22m[39m
+     [90m 104 |[39m     })[33m;[39m
+     [90m 105 |[39m     it([32m'deve escapar aspas duplas'[39m[33m,[39m () [33m=>[39m {
+     [90m 106 |[39m       expect(escapeHtml([32m'"Citação"'[39m))[33m.[39mnot[33m.[39mtoContain([32m'"'[39m)[33m;[39m[0m
+
+      at Object.<anonymous> (src/security/xss/__tests__/xss-protection.test.ts:103:31)
+
+  ● escapeHtml › vetores de ataque HTML › deve bloquear <img onerror>
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "onerror"
+    Received string:        "&#x3C;img src=x onerror=alert(1)&#x3E;"
+
+    [0m [90m 49 |[39m [36mfunction[39m expectNone(result[33m:[39m string[33m,[39m forbidden[33m:[39m string[])[33m:[39m [36mvoid[39m {
+     [90m 50 |[39m   [36mfor[39m ([36mconst[39m token [36mof[39m forbidden) {
+    [31m[1m>[22m[39m[90m 51 |[39m     expect(result)[33m.[39mnot[33m.[39mtoContain(token)[33m;[39m
+     [90m    |[39m                        [31m[1m^[22m[39m
+     [90m 52 |[39m   }
+     [90m 53 |[39m }
+     [90m 54 |[39m[0m
+
+      at expectNone (src/security/xss/__tests__/xss-protection.test.ts:51:24)
+      at Object.<anonymous> (src/security/xss/__tests__/xss-protection.test.ts:120:7)
+
+  ● escapeHtml › vetores de ataque HTML › deve bloquear injeção de tag aninhada
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "SCRIPT"
+    Received string:        "&#x3C;&#x3C;SCRIPT&#x3E;alert(1)//&#x3C;&#x3C;/SCRIPT&#x3E;"
+
+    [0m [90m 49 |[39m [36mfunction[39m expectNone(result[33m:[39m string[33m,[39m forbidden[33m:[39m string[])[33m:[39m [36mvoid[39m {
+     [90m 50 |[39m   [36mfor[39m ([36mconst[39m token [36mof[39m forbidden) {
+    [31m[1m>[22m[39m[90m 51 |[39m     expect(result)[33m.[39mnot[33m.[39mtoContain(token)[33m;[39m
+     [90m    |[39m                        [31m[1m^[22m[39m
+     [90m 52 |[39m   }
+     [90m 53 |[39m }
+     [90m 54 |[39m[0m
+
+      at expectNone (src/security/xss/__tests__/xss-protection.test.ts:51:24)
+      at Object.<anonymous> (src/security/xss/__tests__/xss-protection.test.ts:124:7)
+
+  ● escapeHtmlAttr › breakout de atributo via aspas › deve escapar aspas duplas que fechariam o atributo
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "onclick"
+    Received string:        "&quot;&#x20;onclick&#x3D;&quot;alert(1)"
+
+    [0m [90m 49 |[39m [36mfunction[39m expectNone(result[33m:[39m string[33m,[39m forbidden[33m:[39m string[])[33m:[39m [36mvoid[39m {
+     [90m 50 |[39m   [36mfor[39m ([36mconst[39m token [36mof[39m forbidden) {
+    [31m[1m>[22m[39m[90m 51 |[39m     expect(result)[33m.[39mnot[33m.[39mtoContain(token)[33m;[39m
+     [90m    |[39m                        [31m[1m^[22m[39m
+     [90m 52 |[39m   }
+     [90m 53 |[39m }
+     [90m 54 |[39m[0m
+
+      at expectNone (src/security/xss/__tests__/xss-protection.test.ts:51:24)
+      at Object.<anonymous> (src/security/xss/__tests__/xss-protection.test.ts:176:7)
+
+  ● escapeHtmlAttr › breakout de atributo via aspas › deve escapar aspas simples que fechariam atributo com quotes simples
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "onload"
+    Received string:        "&#x27;&#x20;onload&#x3D;&#x27;alert(1)"
+
+    [0m [90m 49 |[39m [36mfunction[39m expectNone(result[33m:[39m string[33m,[39m forbidden[33m:[39m string[])[33m:[39m [36mvoid[39m {
+     [90m 50 |[39m   [36mfor[39m ([36mconst[39m token [36mof[39m forbidden) {
+    [31m[1m>[22m[39m[90m 51 |[39m     expect(result)[33m.[39mnot[33m.[39mtoContain(token)[33m;[39m
+     [90m    |[39m                        [31m[1m^[22m[39m
+     [90m 52 |[39m   }
+     [90m 53 |[39m }
+     [90m 54 |[39m[0m
+
+      at expectNone (src/security/xss/__tests__/xss-protection.test.ts:51:24)
+      at Object.<anonymous> (src/security/xss/__tests__/xss-protection.test.ts:181:7)
+
+  ● escapeHtmlAttr › vetores clássicos › deve neutralizar payload completo de breakout
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "onerror"
+    Received string:        "&quot;&gt;&lt;img&#x20;src&#x3D;x&#x20;onerror&#x3D;alert(1)&gt;&lt;&quot;"
+
+    [0m [90m 49 |[39m [36mfunction[39m expectNone(result[33m:[39m string[33m,[39m forbidden[33m:[39m string[])[33m:[39m [36mvoid[39m {
+     [90m 50 |[39m   [36mfor[39m ([36mconst[39m token [36mof[39m forbidden) {
+    [31m[1m>[22m[39m[90m 51 |[39m     expect(result)[33m.[39mnot[33m.[39mtoContain(token)[33m;[39m
+     [90m    |[39m                        [31m[1m^[22m[39m
+     [90m 52 |[39m   }
+     [90m 53 |[39m }
+     [90m 54 |[39m[0m
+
+      at expectNone (src/security/xss/__tests__/xss-protection.test.ts:51:24)
+      at Object.<anonymous> (src/security/xss/__tests__/xss-protection.test.ts:219:7)
+
+  ● escapeJs › breakout de string JS via aspas › deve escapar aspas duplas que fechariam a string
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "\""
+    Received string:        "\\\"; alert(1); \\/\\/"
+
+    [0m [90m 334 |[39m     it([32m'deve escapar aspas duplas que fechariam a string'[39m[33m,[39m () [33m=>[39m {
+     [90m 335 |[39m       [36mconst[39m result [33m=[39m escapeJs([32m'"; alert(1); //'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 336 |[39m       expect(result)[33m.[39mnot[33m.[39mtoContain([32m'"'[39m)[33m;[39m
+     [90m     |[39m                          [31m[1m^[22m[39m
+     [90m 337 |[39m     })[33m;[39m
+     [90m 338 |[39m     it([32m'deve escapar aspas simples'[39m[33m,[39m () [33m=>[39m {
+     [90m 339 |[39m       [36mconst[39m result [33m=[39m escapeJs([32m"'; alert(1); //"[39m)[33m;[39m[0m
+
+      at Object.<anonymous> (src/security/xss/__tests__/xss-protection.test.ts:336:26)
+
+  ● escapeJs › breakout de string JS via aspas › deve escapar aspas simples
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "'"
+    Received string:        "\\'; alert(1); \\/\\/"
+
+    [0m [90m 338 |[39m     it([32m'deve escapar aspas simples'[39m[33m,[39m () [33m=>[39m {
+     [90m 339 |[39m       [36mconst[39m result [33m=[39m escapeJs([32m"'; alert(1); //"[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 340 |[39m       expect(result)[33m.[39mnot[33m.[39mtoContain([32m"'"[39m)[33m;[39m
+     [90m     |[39m                          [31m[1m^[22m[39m
+     [90m 341 |[39m     })[33m;[39m
+     [90m 342 |[39m     it([32m'deve escapar backslash ANTES de outros escapes (ordem crítica)'[39m[33m,[39m () [33m=>[39m {
+     [90m 343 |[39m       [90m// Se \ não for escapado primeiro, \\" se torna \" após re-escape[39m[0m
+
+      at Object.<anonymous> (src/security/xss/__tests__/xss-protection.test.ts:340:26)
+
+  ● escapeJs › template literal injection › deve escapar backtick que fecha template literal
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "`"
+    Received string:        "\\`alert(1)\\`"
+
+    [0m [90m 371 |[39m     it([32m'deve escapar backtick que fecha template literal'[39m[33m,[39m () [33m=>[39m {
+     [90m 372 |[39m       [36mconst[39m result [33m=[39m escapeJs([32m'`alert(1)`'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 373 |[39m       expect(result)[33m.[39mnot[33m.[39mtoContain([32m'`'[39m)[33m;[39m
+     [90m     |[39m                          [31m[1m^[22m[39m
+     [90m 374 |[39m     })[33m;[39m
+     [90m 375 |[39m     it([32m'deve escapar ${ que injeta expressão em template literal'[39m[33m,[39m () [33m=>[39m {
+     [90m 376 |[39m       [36mconst[39m result [33m=[39m escapeJs([32m'${alert(1)}'[39m)[33m;[39m[0m
+
+      at Object.<anonymous> (src/security/xss/__tests__/xss-protection.test.ts:373:26)
+
+  ● escapeJs › template literal injection › deve escapar ${ que injeta expressão em template literal
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "${"
+    Received string:        "\\${alert(1)}"
+
+    [0m [90m 375 |[39m     it([32m'deve escapar ${ que injeta expressão em template literal'[39m[33m,[39m () [33m=>[39m {
+     [90m 376 |[39m       [36mconst[39m result [33m=[39m escapeJs([32m'${alert(1)}'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 377 |[39m       expect(result)[33m.[39mnot[33m.[39mtoContain([32m'${'[39m)[33m;[39m
+     [90m     |[39m                          [31m[1m^[22m[39m
+     [90m 378 |[39m     })[33m;[39m
+     [90m 379 |[39m   })[33m;[39m
+     [90m 380 |[39m[0m
+
+      at Object.<anonymous> (src/security/xss/__tests__/xss-protection.test.ts:377:26)
+
+  ● escapeJs › escapeJsTemplate — alias semântico › deve escapar ${ em template literal
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "${"
+    Received string:        "\\${process.env.SECRET}"
+
+    [0m [90m 414 |[39m     it([32m'deve escapar ${ em template literal'[39m[33m,[39m () [33m=>[39m {
+     [90m 415 |[39m       [36mconst[39m result [33m=[39m escapeJsTemplate([32m'${process.env.SECRET}'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 416 |[39m       expect(result)[33m.[39mnot[33m.[39mtoContain([32m'${'[39m)[33m;[39m
+     [90m     |[39m                          [31m[1m^[22m[39m
+     [90m 417 |[39m     })[33m;[39m
+     [90m 418 |[39m   })[33m;[39m
+     [90m 419 |[39m })[33m;[39m[0m
+
+      at Object.<anonymous> (src/security/xss/__tests__/xss-protection.test.ts:416:26)
+
+  ● escapeSvgAttr › sem attrName — comportamento default › deve aplicar escapeHtmlAttr para atributo sem nome
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "onclick"
+    Received string:        "&quot;&#x20;onclick&#x3D;&quot;alert(1)"
+
+    [0m [90m 656 |[39m       [36mconst[39m result [33m=[39m escapeSvgAttr([32m'" onclick="alert(1)'[39m)[33m;[39m
+     [90m 657 |[39m       expect(result)[33m.[39mnot[33m.[39mtoContain([32m'"'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 658 |[39m       expect(result)[33m.[39mnot[33m.[39mtoContain([32m'onclick'[39m)[33m;[39m
+     [90m     |[39m                          [31m[1m^[22m[39m
+     [90m 659 |[39m     })[33m;[39m
+     [90m 660 |[39m   })[33m;[39m
+     [90m 661 |[39m })[33m;[39m[0m
+
+      at Object.<anonymous> (src/security/xss/__tests__/xss-protection.test.ts:658:26)
+
+  ● escapeForContext › contexto "jsTemplate" deve bloquear payload perigoso
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "`"
+    Received string:        "\\`\\${alert}"
+
+    [0m [90m 680 |[39m     (context[33m,[39m payload[33m,[39m token) [33m=>[39m {
+     [90m 681 |[39m       [36mconst[39m result [33m=[39m escapeForContext(payload [36mas[39m string[33m,[39m context)[33m;[39m
+    [31m[1m>[22m[39m[90m 682 |[39m       expect(result)[33m.[39mnot[33m.[39mtoContain(token)[33m;[39m
+     [90m     |[39m                          [31m[1m^[22m[39m
+     [90m 683 |[39m     }
+     [90m 684 |[39m   )[33m;[39m
+     [90m 685 |[39m[0m
+
+      at src/security/xss/__tests__/xss-protection.test.ts:682:26
+
+  ● safeHtml › deve escapar valores interpolados mas preservar HTML estático
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "alert(1)"
+    Received string:        "<p>&#x3C;script&#x3E;alert(1)&#x3C;/script&#x3E;</p>"
+
+    [0m [90m 49 |[39m [36mfunction[39m expectNone(result[33m:[39m string[33m,[39m forbidden[33m:[39m string[])[33m:[39m [36mvoid[39m {
+     [90m 50 |[39m   [36mfor[39m ([36mconst[39m token [36mof[39m forbidden) {
+    [31m[1m>[22m[39m[90m 51 |[39m     expect(result)[33m.[39mnot[33m.[39mtoContain(token)[33m;[39m
+     [90m    |[39m                        [31m[1m^[22m[39m
+     [90m 52 |[39m   }
+     [90m 53 |[39m }
+     [90m 54 |[39m[0m
+
+      at expectNone (src/security/xss/__tests__/xss-protection.test.ts:51:24)
+      at Object.<anonymous> (src/security/xss/__tests__/xss-protection.test.ts:713:5)
+
+  ● safeHtml › deve escapar múltiplos valores na mesma template
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "alert(1)"
+    Received string:        "<div>&#x3C;b&#x3E;Bob&#x3C;/b&#x3E; — &#x22;; alert(1); //&#x22;</div>"
+
+    [0m [90m 49 |[39m [36mfunction[39m expectNone(result[33m:[39m string[33m,[39m forbidden[33m:[39m string[])[33m:[39m [36mvoid[39m {
+     [90m 50 |[39m   [36mfor[39m ([36mconst[39m token [36mof[39m forbidden) {
+    [31m[1m>[22m[39m[90m 51 |[39m     expect(result)[33m.[39mnot[33m.[39mtoContain(token)[33m;[39m
+     [90m    |[39m                        [31m[1m^[22m[39m
+     [90m 52 |[39m   }
+     [90m 53 |[39m }
+     [90m 54 |[39m[0m
+
+      at expectNone (src/security/xss/__tests__/xss-protection.test.ts:51:24)
+      at Object.<anonymous> (src/security/xss/__tests__/xss-protection.test.ts:720:5)
+
+  ● safeAttr › deve escapar valores interpolados em atributos
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "alert(1)"
+    Received string:        "<div title=\"&quot;&#x20;onclick&#x3D;&quot;alert(1)\">"
+
+    [0m [90m 49 |[39m [36mfunction[39m expectNone(result[33m:[39m string[33m,[39m forbidden[33m:[39m string[])[33m:[39m [36mvoid[39m {
+     [90m 50 |[39m   [36mfor[39m ([36mconst[39m token [36mof[39m forbidden) {
+    [31m[1m>[22m[39m[90m 51 |[39m     expect(result)[33m.[39mnot[33m.[39mtoContain(token)[33m;[39m
+     [90m    |[39m                        [31m[1m^[22m[39m
+     [90m 52 |[39m   }
+     [90m 53 |[39m }
+     [90m 54 |[39m[0m
+
+      at expectNone (src/security/xss/__tests__/xss-protection.test.ts:51:24)
+      at Object.<anonymous> (src/security/xss/__tests__/xss-protection.test.ts:749:5)
+
+  ● safeAttr › deve escapar múltiplos atributos na mesma template
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "evil()"
+    Received string:        "<div class=\"x&quot;&#x20;onmouseover&#x3D;&quot;evil()\" title=\"&#x27;&#x20;onfocus&#x3D;&#x27;evil()\">"
+
+    [0m [90m 49 |[39m [36mfunction[39m expectNone(result[33m:[39m string[33m,[39m forbidden[33m:[39m string[])[33m:[39m [36mvoid[39m {
+     [90m 50 |[39m   [36mfor[39m ([36mconst[39m token [36mof[39m forbidden) {
+    [31m[1m>[22m[39m[90m 51 |[39m     expect(result)[33m.[39mnot[33m.[39mtoContain(token)[33m;[39m
+     [90m    |[39m                        [31m[1m^[22m[39m
+     [90m 52 |[39m   }
+     [90m 53 |[39m }
+     [90m 54 |[39m[0m
+
+      at expectNone (src/security/xss/__tests__/xss-protection.test.ts:51:24)
+      at Object.<anonymous> (src/security/xss/__tests__/xss-protection.test.ts:757:5)
+
+  ● runEscapeTests › deve retornar array vazio em ambiente saudável (zero falhas)
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 0
+    Received length: 1
+    Received array:  ["[escapeJs] input=\"\"; alert(1);//\" → output contém \"\"\""]
+
+    [0m [90m 842 |[39m   it([32m'deve retornar array vazio em ambiente saudável (zero falhas)'[39m[33m,[39m () [33m=>[39m {
+     [90m 843 |[39m     [36mconst[39m failures [33m=[39m runEscapeTests()[33m;[39m
+    [31m[1m>[22m[39m[90m 844 |[39m     expect(failures)[33m.[39mtoHaveLength([35m0[39m)[33m;[39m
+     [90m     |[39m                      [31m[1m^[22m[39m
+     [90m 845 |[39m   })[33m;[39m
+     [90m 846 |[39m
+     [90m 847 |[39m   it([32m'deve retornar array de strings quando há falhas simuladas'[39m[33m,[39m () [33m=>[39m {[0m
+
+      at Object.<anonymous> (src/security/xss/__tests__/xss-protection.test.ts:844:22)
+
+Test Suites: 1 failed, 1 total
+Tests:       18 failed, 140 passed, 158 total
+Snapshots:   0 total
+Time:        0.86 s, estimated 1 s
+Ran all test suites matching /src\\security\\xss\\__tests__\\xss-protection.test.ts/i.

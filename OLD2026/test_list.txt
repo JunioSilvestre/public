@@ -1,0 +1,12 @@
+﻿C:\Projetos\Front-End\PRJ-BASE\src\header\__tests__\Header.test.tsx
+C:\Projetos\Front-End\PRJ-BASE\src\security\xss\__tests__\xss-protection.test.ts
+C:\Projetos\Front-End\PRJ-BASE\src\footer\__tests__\Footer.test.tsx
+C:\Projetos\Front-End\PRJ-BASE\src\security\xss\__tests__\html-sanitizer.test.ts
+C:\Projetos\Front-End\PRJ-BASE\e2e\security.spec.ts
+C:\Projetos\Front-End\PRJ-BASE\e2e\pricing.spec.ts
+C:\Projetos\Front-End\PRJ-BASE\e2e\performance.spec.ts
+C:\Projetos\Front-End\PRJ-BASE\e2e\i18n.spec.ts
+C:\Projetos\Front-End\PRJ-BASE\e2e\home.spec.ts
+C:\Projetos\Front-End\PRJ-BASE\e2e\contact.spec.ts
+C:\Projetos\Front-End\PRJ-BASE\e2e\accessibility.spec.ts
+C:\Projetos\Front-End\PRJ-BASE\e2e\a11y.spec.ts

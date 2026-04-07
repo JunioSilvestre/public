@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "@/styles/globals.css";
-import Header from "@/header";
-import Footer from "@/footer";
+import "@/shared/styles/globals.css";
+import Header from "@/shared/components/header";
+import Footer from "@/shared/components/footer";
 import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   description: "High-performance web architectures and modern frontend engineering.",
   robots: { index: true, follow: true },
 };
+
+import { AuthProvider } from '@/shared/providers/AuthProvider';
 
 export default function RootLayout({
   children,
@@ -24,9 +26,11 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
       </head>
       <body className={inter.className}>
-        <Header />
-        <main style={{ paddingTop: '72px' }}>{children}</main>
-        <Footer />
+        <AuthProvider>
+          <Header />
+          <main style={{ paddingTop: '72px' }}>{children}</main>
+          <Footer />
+        </AuthProvider>
         <Script 
           src="https://unpkg.com/feather-icons" 
           strategy="afterInteractive" 

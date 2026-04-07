@@ -1,0 +1,46 @@
+/**
+ * @arquivo     src/about/About.module.css
+ * @módulo      About / CSS
+ * @descrição   Estilos customizados para a seção About.
+ */
+
+.textGradient {
+  background: linear-gradient(to right, #0ea5e9, #6366f1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.photoFrame {
+  position: relative;
+  z-index: 1;
+}
+
+.photoFrame::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+  border-radius: 2rem;
+  z-index: -1;
+  opacity: 0.15;
+  transform: rotate(-2deg);
+}
+
+.responsibilityCard {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+  border: 1px solid #e2e8f0;
+}
+
+.responsibilityCard:hover {
+  transform: translateY(-4px);
+  border-color: #0ea5e9;
+  box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.05);
+}
+
+.statBadge {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}

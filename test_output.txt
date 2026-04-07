@@ -1,4 +1,0 @@
-﻿
-> prj-base@0.1.0 test
-> jest src/security/xss/__tests__/html-sanitizer.test.ts deve bloquear payload: <scr<script>ipt>alert(1)</scr</script>ipt>
-

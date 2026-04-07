@@ -40,3 +40,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# cross-platform & legacy cleanup
+*.exe
+*.ps1
+/*.html
+/*.txt
+/Out-Null
+/dist
+/coverage
+/e2e/test-results
+/e2e/playwright-report

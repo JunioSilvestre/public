@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso à Plataforma</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fafafa;
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(230, 230, 230, 0.5);
+        }
+
+        .hidden-view {
+            display: none;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #d1d1d1;
+            box-shadow: 0 0 0 3px rgba(209, 209, 209, 0.2);
+        }
+
+        /* Estilo para os inputs do token */
+        .token-input {
+            text-align: center;
+            font-size: 1.25rem;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <!-- Container Principal -->
+    <div class="w-full max-w-md">
+
+        <!-- Logotipo ou Nome -->
+        <div class="text-center mb-8">
+            <div
+                class="inline-flex items-center justify-center w-12 h-12 bg-white rounded-xl shadow-sm mb-4 border border-gray-100">
+                <i data-lucide="shield-check" class="text-gray-600 w-6 h-6"></i>
+            </div>
+            <h1 id="page-title" class="text-2xl font-semibold text-gray-800">Bem-vindo de volta</h1>
+            <p id="page-subtitle" class="text-gray-500 text-sm mt-1">Introduza os seus dados para aceder</p>
+        </div>
+
+        <div class="auth-card rounded-3xl p-8 shadow-xl shadow-gray-200/50">
+
+            <!-- Vista: LOGIN -->
+            <div id="login-view" class="space-y-5">
+                <form class="space-y-4" onsubmit="event.preventDefault();">
+                    <div class="space-y-1">
+                        <label class="text-xs font-medium text-gray-600 ml-1">E-mail</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+                                <i data-lucide="mail" class="w-4 h-4"></i>
+                            </span>
+                            <input type="email" placeholder="exemplo@email.com"
+                                class="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm transition-all"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="text-xs font-medium text-gray-600 ml-1">Palavra-passe</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+                                <i data-lucide="lock" class="w-4 h-4"></i>
+                            </span>
+                            <input type="password" placeholder="••••••••"
+                                class="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm transition-all"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between text-xs px-1">
+                        <label
+                            class="flex items-center gap-2 cursor-pointer text-gray-600 hover:text-gray-800 transition-colors">
+                            <input type="checkbox"
+                                class="w-4 h-4 rounded border-gray-300 text-gray-600 focus:ring-gray-400">
+                            Lembrar sessão
+                        </label>
+                        <button type="button" onclick="switchView('forgot')"
+                            class="font-medium text-gray-800 hover:underline">Esqueceu a senha?</button>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full py-3.5 bg-gray-800 hover:bg-gray-900 text-white rounded-xl font-medium transition-all shadow-lg shadow-gray-200 active:scale-[0.98]">
+                        Entrar
+                    </button>
+                </form>
+
+                <div class="relative py-4">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-100"></div>
+                    </div>
+                    <div class="relative flex justify-center text-xs uppercase"><span
+                            class="bg-white px-2 text-gray-400">ou</span></div>
+                </div>
+
+                <p class="text-center text-sm text-gray-500">
+                    Não tem conta?
+                    <button onclick="switchView('signup')" class="text-gray-800 font-semibold hover:underline">Criar
+                        agora</button>
+                </p>
+            </div>
+
+            <!-- Vista: SIGN UP -->
+            <div id="signup-view" class="hidden-view space-y-5">
+                <form class="space-y-4" onsubmit="event.preventDefault(); switchView('verify');">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-gray-600 ml-1">Nome</label>
+                            <input type="text" placeholder="Nome"
+                                class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm transition-all"
+                                required>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-gray-600 ml-1">Apelido</label>
+                            <input type="text" placeholder="Apelido"
+                                class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm transition-all"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="text-xs font-medium text-gray-600 ml-1">E-mail</label>
+                        <input type="email" placeholder="seu@email.com"
+                            class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm transition-all"
+                            required>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="text-xs font-medium text-gray-600 ml-1">Palavra-passe</label>
+                        <input type="password" placeholder="Criar senha"
+                            class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm transition-all"
+                            required>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full py-3.5 bg-gray-800 hover:bg-gray-900 text-white rounded-xl font-medium transition-all shadow-lg shadow-gray-200 active:scale-[0.98]">
+                        Criar conta
+                    </button>
+                </form>
+
+                <p class="text-center text-sm text-gray-500">
+                    Já tem conta?
+                    <button onclick="switchView('login')" class="text-gray-800 font-semibold hover:underline">Fazer
+                        Login</button>
+                </p>
+            </div>
+
+            <!-- Vista: VERIFY TOKEN (NOVA) -->
+            <div id="verify-view" class="hidden-view space-y-6">
+                <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 text-center">
+                    <p class="text-xs text-gray-600 leading-relaxed">
+                        Enviámos um código de 9 dígitos para o seu e-mail. <br>
+                        O código expira em: <span id="timer" class="font-bold text-gray-800">05:00</span>
+                    </p>
+                </div>
+
+                <form class="space-y-6" onsubmit="event.preventDefault();">
+                    <div class="flex items-center justify-between gap-2">
+                        <input type="text" maxlength="3" placeholder="000"
+                            class="token-input w-full py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-100 transition-all uppercase"
+                            required>
+                        <span class="text-gray-300 font-bold">-</span>
+                        <input type="text" maxlength="3" placeholder="000"
+                            class="token-input w-full py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-100 transition-all uppercase"
+                            required>
+                        <span class="text-gray-300 font-bold">-</span>
+                        <input type="text" maxlength="3" placeholder="000"
+                            class="token-input w-full py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-100 transition-all uppercase"
+                            required>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full py-3.5 bg-gray-800 hover:bg-gray-900 text-white rounded-xl font-medium transition-all shadow-lg shadow-gray-200 active:scale-[0.98]">
+                        Validar conta
+                    </button>
+                </form>
+
+                <div class="text-center space-y-3">
+                    <p class="text-sm text-gray-500">Não recebeu o código?</p>
+                    <button id="resend-btn" onclick="resetTimer()"
+                        class="text-gray-800 font-semibold hover:underline text-sm disabled:opacity-50 disabled:no-underline"
+                        disabled>
+                        Reenviar código
+                    </button>
+                </div>
+            </div>
+
+            <!-- Vista: FORGOT PASSWORD -->
+            <div id="forgot-view" class="hidden-view space-y-6">
+                <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                    <p class="text-xs text-gray-600 leading-relaxed text-center">
+                        Introduza o seu e-mail abaixo. Enviaremos um link para redefinir a sua senha.
+                    </p>
+                </div>
+
+                <form class="space-y-4" onsubmit="event.preventDefault();">
+                    <div class="space-y-1">
+                        <label class="text-xs font-medium text-gray-600 ml-1">E-mail de recuperação</label>
+                        <input type="email" placeholder="seu@email.com"
+                            class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm transition-all"
+                            required>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full py-3.5 bg-gray-800 hover:bg-gray-900 text-white rounded-xl font-medium transition-all shadow-lg shadow-gray-200 active:scale-[0.98]">
+                        Enviar link
+                    </button>
+                </form>
+
+                <button onclick="switchView('login')"
+                    class="w-full text-center text-sm text-gray-500 hover:text-gray-800 flex items-center justify-center gap-2 transition-colors">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    Voltar para o Login
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8 text-center text-xs text-gray-400">
+            &copy; 2026 Plataforma Segura. Todos os direitos reservados.
+        </div>
+    </div>
+
+    <script>
+        // Inicializar ícones do Lucide
+        lucide.createIcons();
+
+        let timerInterval;
+        const INITIAL_TIME = 300; // 5 minutos em segundos
+        let timeLeft = INITIAL_TIME;
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timeLeft = INITIAL_TIME;
+            const timerDisplay = document.getElementById('timer');
+            const resendBtn = document.getElementById('resend-btn');
+
+            resendBtn.disabled = true;
+
+            timerInterval = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+
+                timerDisplay.innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.innerText = "Expirado";
+                    resendBtn.disabled = false;
+                } else {
+                    timeLeft--;
+                }
+            }, 1000);
+        }
+
+        function resetTimer() {
+            startTimer();
+            // Lógica fictícia de reenvio
+            console.log("Token reenviado!");
+        }
+
+        function switchView(view) {
+            const views = ['login-view', 'signup-view', 'verify-view', 'forgot-view'];
+            const title = document.getElementById('page-title');
+            const subtitle = document.getElementById('page-subtitle');
+
+            // Esconder todas as vistas
+            views.forEach(id => document.getElementById(id).classList.add('hidden-view'));
+
+            const activeView = document.getElementById(`${view}-view`);
+            activeView.classList.remove('hidden-view');
+
+            if (view === 'login') {
+                title.innerText = 'Bem-vindo de volta';
+                subtitle.innerText = 'Introduza os seus dados para aceder';
+                clearInterval(timerInterval);
+            } else if (view === 'signup') {
+                title.innerText = 'Criar nova conta';
+                subtitle.innerText = 'Comece a usar a nossa plataforma hoje';
+                clearInterval(timerInterval);
+            } else if (view === 'verify') {
+                title.innerText = 'Verificar conta';
+                subtitle.innerText = 'Validar o código enviado por e-mail';
+                startTimer();
+            } else if (view === 'forgot') {
+                title.innerText = 'Recuperar senha';
+                subtitle.innerText = 'Não se preocupe, acontece aos melhores';
+                clearInterval(timerInterval);
+            }
+        }
+
+        // Auto-focus para os inputs do token
+        const inputs = document.querySelectorAll('.token-input');
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length >= 3 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

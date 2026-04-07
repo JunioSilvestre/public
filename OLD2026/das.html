@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Competências - Ian Dunkerley</title>
+    <!-- Importação do Tailwind CSS para estilização rápida e utilitária -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Importação da biblioteca Lucide para ícones modernos -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Importação da fonte Inter para um aspeto de interface de sistema moderno */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        /* Fonte Mono para o código dentro do VSCode */
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        /* Transição suave para a sidebar */
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+
+        /* Lógica de animação das vistas (Overview vs Tech Stack) */
+        .view-content {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .view-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Efeito de hover nos cards de tecnologia */
+        .tech-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Estilos do Modal VSCode */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* Estilo específico para o bloco de código dentro do "VSCode" */
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Scrollbar personalizada para o "Editor" */
+        .vscode-scroll::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .vscode-scroll::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+
+        .vscode-scroll::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 5px;
+        }
+
+        /* Responsividade da Sidebar Mobile */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                z-index: 50;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="flex min-h-screen">
+
+    <!-- ==========================================
+         MENU LATERAL (SIDEBAR)
+         ========================================== -->
+    <aside id="sidebar"
+        class="sidebar w-64 bg-white border-r border-gray-100 flex flex-col h-screen sticky top-0 shadow-sm">
+        <!-- Logo do Dashboard -->
+        <div class="p-6 flex items-center gap-3">
+            <div class="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center">
+                <i data-lucide="layout-dashboard" class="text-white w-5 h-5"></i>
+            </div>
+            <span class="font-bold text-gray-800 tracking-tight">SkillDash</span>
+        </div>
+
+        <!-- Links de Navegação -->
+        <nav class="flex-1 px-4 space-y-1 mt-4">
+            <button onclick="switchView('overview')" id="nav-overview"
+                class="w-full flex items-center gap-3 px-4 py-3 text-gray-700 bg-gray-50 rounded-xl font-medium transition-all nav-btn">
+                <i data-lucide="pie-chart" class="w-5 h-5"></i>
+                Visão Geral
+            </button>
+            <button onclick="switchView('techstack')" id="nav-techstack"
+                class="w-full flex items-center gap-3 px-4 py-3 text-gray-500 hover:text-gray-800 hover:bg-gray-50 rounded-xl transition-all nav-btn">
+                <i data-lucide="code-2" class="w-5 h-5"></i>
+                Tech Stack
+            </button>
+            <button
+                class="w-full flex items-center gap-3 px-4 py-3 text-gray-500 hover:text-gray-800 hover:bg-gray-50 rounded-xl transition-all">
+                <i data-lucide="award" class="w-5 h-5"></i>
+                Certificações
+            </button>
+            <button
+                class="w-full flex items-center gap-3 px-4 py-3 text-gray-500 hover:text-gray-800 hover:bg-gray-50 rounded-xl transition-all">
+                <i data-lucide="folder-kanban" class="w-5 h-5"></i>
+                Projetos
+            </button>
+        </nav>
+
+        <!-- Perfil do Utilizador (Footer da Sidebar) -->
+        <div class="p-4 border-t border-gray-50">
+            <div class="flex items-center gap-3 px-4 py-3">
+                <div class="w-10 h-10 bg-gray-200 rounded-full overflow-hidden border border-gray-100">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Avatar">
+                </div>
+                <div class="flex-1 text-left">
+                    <p class="text-sm font-semibold text-gray-800">Ian Dunkerley</p>
+                    <p class="text-xs text-gray-400">Senior Dev</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ==========================================
+         CONTEÚDO PRINCIPAL (MAIN)
+         ========================================== -->
+    <main class="flex-1 flex flex-col min-w-0">
+
+        <!-- Header Superior: Barra de Pesquisa e Notificações -->
+        <header class="bg-white border-b border-gray-100 p-4 flex items-center justify-between lg:px-8">
+            <button onclick="toggleSidebar()" class="lg:hidden p-2 text-gray-500">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+            <div class="flex items-center gap-4 ml-auto">
+                <div class="relative hidden md:block">
+                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                    <input type="text" placeholder="Procurar competência..."
+                        class="pl-10 pr-4 py-2 bg-gray-50 border-none rounded-xl text-sm w-64 focus:ring-1 focus:ring-gray-200 transition-all">
+                </div>
+                <button class="p-2 text-gray-400 hover:text-gray-600 relative">
+                    <i data-lucide="bell" class="w-5 h-5"></i>
+                    <span class="absolute top-2 right-2 w-2 h-2 bg-red-400 rounded-full border-2 border-white"></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- VISTA: VISÃO GERAL (Default) -->
+        <div id="view-overview" class="view-content active p-6 lg:p-8 space-y-8 overflow-y-auto">
+            <div class="flex flex-col md:items-start">
+                <h2 class="text-2xl font-bold text-gray-800">Skills Dashboard</h2>
+                <p class="text-gray-500 text-sm">Visão global do seu progresso técnico.</p>
+            </div>
+
+            <!-- Stats Grid: Resumo rápido -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-500">
+                        <i data-lucide="layers" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">Total Techs</p>
+                        <p class="text-xl font-bold text-gray-800">24</p>
+                    </div>
+                </div>
+                <!-- ... outros stats mantidos para contexto ... -->
+            </div>
+
+            <!-- Cards de Destaque -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <h3 class="text-lg font-bold text-gray-800 mb-6">Domínio de Tecnologias</h3>
+                    <div class="space-y-6">
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-end"><span
+                                    class="text-sm font-semibold text-gray-700">React & Next.js</span><span
+                                    class="text-xs font-bold text-blue-500">95%</span></div>
+                            <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                                <div class="bg-blue-500 h-full rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="switchView('techstack')"
+                        class="mt-8 text-sm font-semibold text-gray-400 hover:text-gray-800 flex items-center gap-2 transition-colors">
+                        Explorar Tech Stack completa <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA: TECH STACK (Onde estão os cards interativos) -->
+        <div id="view-techstack" class="view-content p-6 lg:p-8 space-y-8 overflow-y-auto">
+            <div class="flex items-center justify-between">
+                <h2 class="text-2xl font-bold text-gray-800">Especialização Técnica</h2>
+                <button onclick="switchView('overview')"
+                    class="text-sm font-medium text-gray-500 hover:text-gray-800 flex items-center gap-2">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Card Interativo: React & Next.js (ABRE O VSCODE AO CLICAR) -->
+                <div onclick="openVscode()"
+                    class="tech-card bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-6 group">
+                    <div class="flex justify-between items-start">
+                        <div
+                            class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300">
+                            <i data-lucide="atom" class="w-8 h-8"></i>
+                        </div>
+                        <div class="flex flex-col items-end gap-2">
+                            <span
+                                class="px-3 py-1 bg-blue-50 text-blue-600 text-[10px] font-bold uppercase tracking-wider rounded-full">Especialista</span>
+                            <span class="text-[10px] text-gray-300 group-hover:text-blue-400 transition-colors">Clique
+                                para abrir código</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800">React & Next.js</h3>
+                        <p class="text-sm text-gray-500 mt-2 leading-relaxed">Desenvolvimento de interfaces performantes
+                            com foco em SSR, SSG e roteamento avançado.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 pt-2">
+                        <span
+                            class="px-3 py-1 bg-gray-50 border border-gray-100 text-gray-500 text-xs rounded-lg">Server
+                            Components</span>
+                        <span class="px-3 py-1 bg-gray-50 border border-gray-100 text-gray-500 text-xs rounded-lg">Redux
+                            / Zustand</span>
+                    </div>
+                </div>
+
+                <!-- Outros cards mantidos por estrutura -->
+                <div class="tech-card bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-6">
+                    <div class="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-500"><i
+                            data-lucide="shield-check" class="w-8 h-8"></i></div>
+                    <h3 class="text-xl font-bold text-gray-800">TypeScript</h3>
+                    <p class="text-sm text-gray-500">Arquitetura de tipos avançada e escalável.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ==========================================
+         MODAL SIMULAÇÃO VSCODE (MAC VERSION)
+         ========================================== -->
+    <div id="vscode-modal" class="modal-overlay" onclick="closeVscode(event)">
+        <!-- Janela do Editor -->
+        <div class="w-full max-w-5xl bg-[#1e1e1e] rounded-xl shadow-2xl overflow-hidden border border-[#333] flex flex-col h-[70vh] md:h-[600px] animate-fadeIn"
+            onclick="event.stopPropagation()">
+
+            <!-- Barra de Título (Mac Style) -->
+            <div class="bg-[#323233] px-4 py-2 flex items-center justify-between border-b border-[#252526]">
+                <div class="flex items-center gap-2">
+                    <!-- Traffic Lights (Mac Buttons) -->
+                    <div class="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
+                    <div class="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
+                    <div class="w-3 h-3 rounded-full bg-[#27c93f]"></div>
+                </div>
+                <div class="text-[11px] text-[#cccccc] font-medium tracking-tight">App.tsx — Portfolio — Visual Studio
+                    Code</div>
+                <div class="w-12"></div> <!-- Spacer para equilíbrio -->
+            </div>
+
+            <!-- Área Principal (Sidebar + Editor) -->
+            <div class="flex flex-1 overflow-hidden">
+
+                <!-- VSCode Sidebar (Ícones de Ação) -->
+                <div class="w-12 bg-[#333333] flex flex-col items-center py-4 gap-6 text-[#858585]">
+                    <i data-lucide="files" class="w-6 h-6 text-white border-l-2 border-white pl-1"></i>
+                    <i data-lucide="search" class="w-5 h-5 hover:text-white transition-colors"></i>
+                    <i data-lucide="git-branch" class="w-5 h-5 hover:text-white transition-colors"></i>
+                    <i data-lucide="play" class="w-5 h-5 hover:text-white transition-colors"></i>
+                    <i data-lucide="blocks" class="w-5 h-5 hover:text-white transition-colors mt-auto mb-2"></i>
+                </div>
+
+                <!-- Explorer Sidebar (Ficheiros) -->
+                <div class="hidden md:flex w-48 bg-[#252526] border-r border-[#1e1e1e] flex-col p-3 gap-2">
+                    <span class="text-[10px] font-bold text-[#bbbbbb] uppercase tracking-wider mb-2">Explorador</span>
+                    <div class="flex items-center gap-2 text-xs text-[#cccccc]">
+                        <i data-lucide="chevron-down" class="w-3 h-3"></i>
+                        <span class="font-bold">src</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs text-[#cccccc] ml-4 bg-[#37373d] p-1 rounded">
+                        <i data-lucide="file-code" class="w-4 h-4 text-[#519aba]"></i>
+                        <span>App.tsx</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs text-[#cccccc] ml-4 hover:bg-[#2a2d2e] p-1 rounded">
+                        <i data-lucide="file-json" class="w-4 h-4 text-[#cbcb41]"></i>
+                        <span>package.json</span>
+                    </div>
+                </div>
+
+                <!-- Área de Edição de Código -->
+                <div class="flex-1 flex flex-col bg-[#1e1e1e] overflow-hidden">
+                    <!-- Tabs -->
+                    <div class="flex bg-[#252526] border-b border-[#1e1e1e]">
+                        <div
+                            class="px-4 py-2 bg-[#1e1e1e] text-xs text-white border-t border-blue-400 flex items-center gap-2">
+                            <i data-lucide="file-code" class="w-3 h-3 text-[#519aba]"></i>
+                            App.tsx
+                            <i data-lucide="x" class="w-3 h-3 ml-2 hover:bg-[#333] rounded"></i>
+                        </div>
+                    </div>
+
+                    <!-- Conteúdo do Código com Syntax Highlighting Mockup -->
+                    <div class="flex-1 p-6 overflow-auto vscode-scroll code-font text-[13px] leading-relaxed">
+                        <div class="flex gap-4">
+                            <!-- Linhas -->
+                            <div class="text-[#858585] text-right select-none pr-4 border-r border-[#333]">
+                                1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13
+                            </div>
+                            <!-- Código -->
+                            <div class="whitespace-nowrap">
+                                <span class="text-[#c586c0]">import</span> <span class="text-[#9cdcfe]">React</span>
+                                <span class="text-[#c586c0]">from</span> <span
+                                    class="text-[#ce9178]">'react'</span>;<br>
+                                <span class="text-[#c586c0]">import</span> { <span
+                                    class="text-[#9cdcfe]">NextPage</span> } <span class="text-[#c586c0]">from</span>
+                                <span class="text-[#ce9178]">'next'</span>;<br><br>
+                                <span class="text-[#569cd6]">const</span> <span class="text-[#dcdcaa]">Home</span>:
+                                <span class="text-[#4ec9b0]">NextPage</span> = () <span class="text-[#569cd6]">=></span>
+                                {<br>
+                                &nbsp;&nbsp;<span class="text-[#c586c0]">return</span> (<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-[#808080]">&lt;</span><span
+                                    class="text-[#569cd6]">div</span> <span
+                                    class="text-[#9cdcfe]">className</span>=<span class="text-[#ce9178]">"flex
+                                    min-h-screen"</span><span class="text-[#808080]">&gt;</span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-[#808080]">&lt;</span><span
+                                    class="text-[#4ec9b0]">MainComponent</span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                    class="text-[#9cdcfe]">title</span>=<span class="text-[#ce9178]">"React
+                                    Specialist"</span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                    class="text-[#9cdcfe]">level</span>={<span class="text-[#b5cea8]">100</span>}<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-[#808080]">/&gt;</span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-[#808080]">&lt;/</span><span
+                                    class="text-[#569cd6]">div</span><span class="text-[#808080]">&gt;</span><br>
+                                &nbsp;&nbsp;);<br>
+                                };<br><br>
+                                <span class="text-[#c586c0]">export default</span> <span
+                                    class="text-[#dcdcaa]">Home</span>;
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Barra de Estado do VSCode -->
+                    <div class="bg-[#007acc] px-3 py-0.5 flex items-center justify-between text-[11px] text-white">
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-1"><i data-lucide="git-branch" class="w-3 h-3"></i> main*
+                            </div>
+                            <div class="flex items-center gap-1"><i data-lucide="refresh-cw" class="w-3 h-3"></i>
+                                Syncing...</div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span>TypeScript JSX</span>
+                            <span>UTF-8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         JAVASCRIPT DE LÓGICA E INTERAÇÃO
+         ========================================== -->
+    <script>
+        // 1. Inicializar todos os ícones da biblioteca Lucide
+        lucide.createIcons();
+
+        // 2. Lógica de Sidebar Mobile: Alternar entre visível e escondida
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        // 3. Lógica de Navegação: Trocar entre Overview e Tech Stack
+        function switchView(viewId) {
+            // Remove a classe 'active' de todas as vistas
+            document.querySelectorAll('.view-content').forEach(view => {
+                view.classList.remove('active');
+            });
+
+            // Ativa apenas a vista solicitada pelo ID
+            document.getElementById(`view-${viewId}`).classList.add('active');
+
+            // Atualiza os estilos dos botões no menu para mostrar qual está ativo
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-gray-50', 'text-gray-800', 'font-medium');
+                btn.classList.add('text-gray-500');
+            });
+
+            // Adiciona destaque ao botão clicado
+            const activeBtn = document.getElementById(`nav-${viewId}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-gray-500');
+                activeBtn.classList.add('bg-gray-50', 'text-gray-800', 'font-medium');
+            }
+
+            // Garante que a sidebar fecha no mobile após clicar num link
+            if (window.innerWidth < 1024) {
+                document.getElementById('sidebar').classList.remove('active');
+            }
+
+            // Força a atualização dos ícones dinâmicos
+            lucide.createIcons();
+        }
+
+        // 4. Lógica do Modal VSCode: Abrir a janela de simulação
+        function openVscode() {
+            const modal = document.getElementById('vscode-modal');
+            modal.classList.add('active');
+            // Impede o scroll do corpo da página quando o modal está aberto
+            document.body.style.overflow = 'hidden';
+            lucide.createIcons();
+        }
+
+        // 5. Lógica do Modal VSCode: Fechar a janela
+        function closeVscode(event) {
+            // Fecha apenas se clicar fora da janela (no overlay) ou via lógica
+            const modal = document.getElementById('vscode-modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    </script>
+</body>
+
+</html>

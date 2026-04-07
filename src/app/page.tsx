@@ -6,10 +6,10 @@
  */
 "use client";
 
-import Hero from '@/hero';
-import Contact from '@/contact';
-import About from '@/about';
-import Works, { CTA } from '@/works';
+import Hero from '@/modules/landing/hero';
+import Contact from '@/modules/landing/contact';
+import About from '@/modules/landing/about';
+import Works, { CTA } from '@/modules/landing/works';
 
 export default function HomePage() {
   return (

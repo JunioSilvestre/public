@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me | Software Engineer Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f5;
+            color: #1e293b;
+        }
+
+        /* REUSANDO O GRADIENTE:
+           Para aplicar em outros textos, use:
+           class="text-gradient"
+        */
+        .text-gradient {
+            background: linear-gradient(to right, #0ea5e9, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .photo-frame {
+            position: relative;
+            z-index: 1;
+        }
+
+        .photo-frame::before {
+            content: '';
+            position: absolute;
+            inset: -10px;
+            background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+            border-radius: 2rem;
+            z-index: -1;
+            opacity: 0.15;
+            transform: rotate(-2deg);
+        }
+
+        .responsibility-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            border: 1px solid #e2e8f0;
+        }
+
+        .responsibility-card:hover {
+            transform: translateY(-4px);
+            border-color: #0ea5e9;
+            box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-badge {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- About Section -->
+    <section class="py-24 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto">
+
+        <!-- Header & Intro -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
+            <!-- Coluna Foto -->
+            <div class="lg:col-span-5">
+                <div class="photo-frame">
+                    <div class="aspect-[4/5] rounded-3xl overflow-hidden bg-slate-200 border-4 border-white shadow-2xl">
+                        <!-- Substitua o src pela sua foto oficial -->
+                        <img src="https://images.unsplash.com/photo-1556157382-9791f89639c8?auto=format&fit=crop&q=80&w=800"
+                            alt="Sua Foto"
+                            class="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-700">
+                    </div>
+
+                    <!-- Stats Overlays -->
+                    <div class="absolute -bottom-6 -right-6 stat-badge p-4 rounded-2xl shadow-lg">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-cyan-100 text-cyan-600 rounded-lg">
+                                <i data-lucide="code-2" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Stack</p>
+                                <p class="text-sm font-bold text-slate-800 italic">Frontend Focused</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Texto de Impacto -->
+            <div class="lg:col-span-7 flex flex-col justify-center">
+                <h2 class="text-indigo-600 font-bold uppercase tracking-[0.3em] text-xs mb-4">Software Engineer</h2>
+                <h1 class="text-3xl md:text-5xl font-bold text-slate-900 leading-[1.1] mb-8">
+                    Engenheiro de Software especializado em <span class="text-gradient">Front-End</span>.
+                </h1>
+                <p class="text-xl text-slate-600 font-medium mb-6">
+                    Transformo arquiteturas complexas em interfaces elegantes, fluidas e de alta performance, unindo
+                    rigor técnico com excelência visual.
+                </p>
+                <div class="flex gap-6 mt-4">
+                    <div class="flex items-center gap-2">
+                        <span class="w-10 h-[2px] bg-slate-300"></span>
+                        <span class="text-slate-400 text-sm font-semibold uppercase tracking-widest">Comprometido com a
+                            qualidade</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Responsabilidades (Grid das Funções) -->
+        <div class="space-y-10">
+            <div class="text-center max-w-2xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-900 mb-4">Domínios de Atuação</h3>
+                <p class="text-slate-500">Minha atuação abrange todo o ciclo de vida do Front-End, do design à
+                    infraestrutura de desenvolvimento.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Card 1: UI/UX -->
+                <div class="responsibility-card p-6 rounded-2xl">
+                    <div class="w-12 h-12 bg-cyan-50 text-cyan-600 rounded-xl flex items-center justify-center mb-4">
+                        <i data-lucide="palette"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 mb-2">Interfaces & UX</h4>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Desenvolvimento de UIs pixel-perfect (Figma) focadas em usabilidade, acessibilidade (A11y) e
+                        experiências intuitivas.
+                    </p>
+                </div>
+
+                <!-- Card 2: Stack Moderna -->
+                <div class="responsibility-card p-6 rounded-2xl">
+                    <div
+                        class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4">
+                        <i data-lucide="layers"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 mb-2">Frameworks & Arquitetura</h4>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Domínio de React, Next.js e TypeScript para criar componentes modulares, reutilizáveis e
+                        escaláveis.
+                    </p>
+                </div>
+
+                <!-- Card 3: Performance -->
+                <div class="responsibility-card p-6 rounded-2xl">
+                    <div
+                        class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-4">
+                        <i data-lucide="zap"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 mb-2">Otimização & Performance</h4>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Foco em Core Web Vitals, Lazy Loading e Code Splitting para garantir velocidade máxima de
+                        carregamento.
+                    </p>
+                </div>
+
+                <!-- Card 4: Integração -->
+                <div class="responsibility-card p-6 rounded-2xl">
+                    <div
+                        class="w-12 h-12 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center mb-4">
+                        <i data-lucide="arrow-left-right"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 mb-2">Integração & Estado</h4>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Consumo de APIs complexas e gerenciamento de estado global eficiente (Zustand, Redux ou Context
+                        API).
+                    </p>
+                </div>
+
+                <!-- Card 5: Qualidade -->
+                <div class="responsibility-card p-6 rounded-2xl">
+                    <div class="w-12 h-12 bg-red-50 text-red-600 rounded-xl flex items-center justify-center mb-4">
+                        <i data-lucide="shield-check"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 mb-2">Testes & Refatoração</h4>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Garantia de estabilidade via testes unitários (Jest/RTL) e manutenção constante da qualidade do
+                        código.
+                    </p>
+                </div>
+
+                <!-- Card 6: Ecossistema -->
+                <div class="responsibility-card p-6 rounded-2xl">
+                    <div class="w-12 h-12 bg-slate-50 text-slate-600 rounded-xl flex items-center justify-center mb-4">
+                        <i data-lucide="settings"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 mb-2">Ambiente & DevOps</h4>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Configuração de tooling moderno (Vite, ESLint), versionamento Git e colaboração via Metodologias
+                        Ágeis.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Footer Call -->
+        <div
+            class="mt-20 p-8 rounded-3xl bg-white border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="flex items-center gap-6">
+                <div
+                    class="w-16 h-16 bg-gradient-to-br from-cyan-500 to-indigo-500 rounded-full flex items-center justify-center text-white shadow-lg">
+                    <i data-lucide="rocket" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <p class="text-slate-900 font-bold text-lg leading-tight">Pronto para elevar o nível do seu projeto?
+                    </p>
+                    <p class="text-slate-500 text-sm">Expertise técnica e olhar refinado para o Front-End.</p>
+                </div>
+            </div>
+            <a href="#contact"
+                class="w-full md:w-auto px-10 py-4 bg-slate-900 text-white rounded-2xl font-bold hover:bg-slate-800 transition-all text-center">
+                Vamos Conversar
+            </a>
+        </div>
+
+    </section>
+
+    <script>
+        // Inicialização dos ícones Lucide
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
