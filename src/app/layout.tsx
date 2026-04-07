@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "@/shared/styles/globals.css";
 import Header from "@/shared/components/header";
 import Footer from "@/shared/components/footer";
 import Script from "next/script";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Senior Software Engineer | Portfolio",
@@ -25,7 +22,7 @@ export default function RootLayout({
       <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
       </head>
-      <body className={inter.className}>
+      <body>
         <AuthProvider>
           <Header />
           <main style={{ paddingTop: '72px' }}>{children}</main>

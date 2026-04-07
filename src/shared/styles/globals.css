@@ -15,10 +15,25 @@
  *              Ajuste conforme o breakpoint máximo do design system.
  */
 
+/* ── Fontes Locais ───────────────────────────────────────────────────────── */
+@import './fonts.css';
+
 /* ── Camadas do Tailwind CSS ─────────────────────────────────────────────── */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ── Design Tokens — Tipografia ──────────────────────────────────────────── */
+:root {
+  /* Headlines, títulos, display — geométrica e moderna */
+  --font-head: 'Work Sans', system-ui, -apple-system, sans-serif;
+
+  /* Corpo de texto, UI, labels — máxima legibilidade */
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Código, dados, monospace — fallback do sistema */
+  --font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, monospace;
+}
 
 html {
   scroll-behavior: smooth;
@@ -26,6 +41,7 @@ html {
 
 body {
   background-color: #f5f5f5;
+  font-family: var(--font-body);
 }
 
 main {

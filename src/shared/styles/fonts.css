@@ -1,0 +1,51 @@
+/**
+ * @arquivo     src/shared/styles/fonts.css
+ * @módulo      Estilos / Fontes
+ * @descrição   Declarações @font-face para as fontes locais do portfólio.
+ *              Utiliza Variable Fonts (um único arquivo cobre todos os pesos),
+ *              eliminando dependência de CDN externo (Google Fonts).
+ *
+ * @fontes
+ *   - Work Sans   → Headlines, títulos, display (--font-head)
+ *   - Inter       → Corpo de texto, UI, labels   (--font-body)
+ *
+ * @notas       Os arquivos TTF Variable estão em /public/fonts/.
+ *              Suporte a Variable Fonts: Chrome 66+, Firefox 62+, Safari 11+.
+ *              Fallbacks para sistemas sem suporte: pesos estáticos via font-weight range.
+ */
+
+/* ── Work Sans — Headlines / Display ──────────────────────────────────────── */
+
+@font-face {
+  font-family: 'Work Sans';
+  src: url('/fonts/Work_Sans/WorkSans-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Work Sans';
+  src: url('/fonts/Work_Sans/WorkSans-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ── Inter — Corpo de Texto / UI ──────────────────────────────────────────── */
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
