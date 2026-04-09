@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevBoard | Portfolio Profissional Full Width</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#a855f7',
+                        bgLight: '#f5f5f5',
+                        bgDark: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600&family=JetBrains+Mono&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        .font-sora {
+            font-family: 'Sora', sans-serif;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+
+        /* Transições suaves para expansão */
+        .transition-all-custom {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Classes de largura da Sidebar */
+        .sidebar-expanded {
+            width: 280px;
+        }
+
+        .sidebar-collapsed {
+            width: 80px;
+        }
+
+        /* Estilos Conhecimento */
+        .cat-card {
+            transition: all 0.3s ease;
+            border-radius: 2rem;
+        }
+
+        .cat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.08);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            transition: width 0.8s ease;
+        }
+
+        pre code.hljs {
+            border-radius: 1rem;
+            padding: 1.5rem !important;
+            font-size: 13px;
+        }
+
+        /* Ajuste Mobile */
+        @media (max-width: 1024px) {
+            #sidebar.mobile-hidden {
+                transform: translateX(-100%);
+            }
+
+            #sidebar.mobile-visible {
+                transform: translateX(0);
+                width: 280px;
+            }
+        }
+
+        .profile-cover {
+            height: 180px;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            border-radius: 2.5rem 2.5rem 0 0;
+        }
+    </style>
+</head>
+
+<body class="bg-bgLight dark:bg-bgDark text-slate-900 dark:text-slate-100 transition-colors duration-300 min-h-screen">
+
+    <!-- Container Full Width (Ocupa 100% do Monitor) -->
+    <div class="w-full min-h-screen flex relative shadow-2xl bg-bgLight dark:bg-bgDark">
+
+        <!-- SIDEBAR -->
+        <aside id="sidebar"
+            class="sticky top-0 h-screen bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transition-all-custom overflow-hidden flex flex-col z-50 sidebar-collapsed mobile-hidden">
+            <div class="h-full flex flex-col py-6 px-4">
+                <!-- Logo -->
+                <div class="flex items-center gap-4 mb-10 px-2 overflow-hidden cursor-pointer shrink-0"
+                    onclick="switchView('dashboard')">
+                    <div
+                        class="min-w-[40px] w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-secondary flex items-center justify-center text-white font-bold shrink-0 shadow-lg shadow-primary/20">
+                        JS</div>
+                    <span id="logo-text"
+                        class="font-bold text-xl tracking-tight whitespace-nowrap opacity-0 transition-opacity duration-300 font-sora text-primary">John
+                        Silva</span>
+                </div>
+
+                <!-- Menu Principal -->
+                <nav class="space-y-1 flex-1 overflow-y-auto no-scrollbar">
+                    <h3
+                        class="sidebar-label text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-3 opacity-0 transition-opacity duration-300">
+                        🧭 Menu</h3>
+
+                    <button onclick="switchView('dashboard')"
+                        class="nav-item w-full flex items-center gap-4 px-3 py-3 rounded-xl transition-all-300 group hover:bg-slate-100 dark:hover:bg-slate-800"
+                        data-view="dashboard">
+                        <i data-lucide="layout-dashboard" class="w-6 h-6 shrink-0 text-slate-500"></i>
+                        <span
+                            class="sidebar-text whitespace-nowrap opacity-0 transition-opacity duration-300 font-medium">Dashboard</span>
+                    </button>
+
+                    <button onclick="switchView('profile')"
+                        class="nav-item w-full flex items-center gap-4 px-3 py-3 rounded-xl transition-all-300 group hover:bg-slate-100 dark:hover:bg-slate-800"
+                        data-view="profile">
+                        <i data-lucide="user" class="w-6 h-6 shrink-0 text-slate-500"></i>
+                        <span
+                            class="sidebar-text whitespace-nowrap opacity-0 transition-opacity duration-300 font-medium">Perfil</span>
+                    </button>
+
+                    <button onclick="switchView('knowledge')"
+                        class="nav-item w-full flex items-center gap-4 px-3 py-3 rounded-xl transition-all-300 group hover:bg-slate-100 dark:hover:bg-slate-800"
+                        data-view="knowledge">
+                        <i data-lucide="brain" class="w-6 h-6 shrink-0 text-slate-500"></i>
+                        <span
+                            class="sidebar-text whitespace-nowrap opacity-0 transition-opacity duration-300 font-medium">Conhecimentos</span>
+                    </button>
+
+                    <button onclick="switchView('projects')"
+                        class="nav-item w-full flex items-center gap-4 px-3 py-3 rounded-xl transition-all-300 group hover:bg-slate-100 dark:hover:bg-slate-800"
+                        data-view="projects">
+                        <i data-lucide="folder-kanban" class="w-6 h-6 shrink-0 text-slate-500"></i>
+                        <span
+                            class="sidebar-text whitespace-nowrap opacity-0 transition-opacity duration-300 font-medium">Projetos</span>
+                    </button>
+
+                    <button
+                        class="nav-item w-full flex items-center gap-4 px-3 py-3 rounded-xl transition-all-300 group hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <i data-lucide="history" class="w-6 h-6 shrink-0 text-slate-500"></i>
+                        <span
+                            class="sidebar-text whitespace-nowrap opacity-0 transition-opacity duration-300 font-medium">Experiência</span>
+                    </button>
+
+                    <button
+                        class="nav-item w-full flex items-center gap-4 px-3 py-3 rounded-xl transition-all-300 group hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <i data-lucide="mail" class="w-6 h-6 shrink-0 text-slate-500"></i>
+                        <span
+                            class="sidebar-text whitespace-nowrap opacity-0 transition-opacity duration-300 font-medium">Contato</span>
+                    </button>
+                </nav>
+
+                <div class="mt-auto pt-6 border-t border-slate-100 dark:border-slate-800 shrink-0">
+                    <button
+                        class="w-full flex items-center gap-4 px-3 py-2.5 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <i data-lucide="settings" class="w-6 h-6 shrink-0"></i>
+                        <span
+                            class="sidebar-text whitespace-nowrap opacity-0 transition-opacity duration-300 text-sm font-medium">Ajustes</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main id="main-content" class="flex-1 flex flex-col min-w-0 transition-all-custom">
+
+            <!-- HEADER DINÂMICO (Ocupa 100% da área restante do monitor) -->
+            <header id="topbar"
+                class="h-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-6 sticky top-0 z-40 transition-all-custom">
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleSidebarMobile()"
+                        class="lg:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <i data-lucide="menu" class="w-6 h-6 text-slate-600"></i>
+                    </button>
+                    <div id="breadcrumb"
+                        class="hidden lg:flex items-center gap-2 text-sm text-slate-500 font-medium font-sora">
+                        <span class="hover:text-primary cursor-pointer"
+                            onclick="switchView('dashboard')">DevBoard</span>
+                        <i data-lucide="chevron-right" class="w-4 h-4 opacity-30"></i>
+                        <span id="current-page-title"
+                            class="text-slate-900 dark:text-slate-100 font-bold uppercase tracking-tight">Dashboard</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button id="theme-toggle"
+                        class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all-300">
+                        <i data-lucide="sun" class="w-5 h-5 block dark:hidden text-amber-500"></i>
+                        <i data-lucide="moon" class="w-5 h-5 hidden dark:block text-blue-400"></i>
+                    </button>
+                    <div class="w-9 h-9 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden ring-2 ring-white dark:ring-slate-800 cursor-pointer shadow-sm"
+                        onclick="switchView('profile')">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User">
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTEÚDO SCROLLER -->
+            <div id="content-scroller"
+                class="p-6 md:p-10 space-y-8 overflow-y-auto max-h-[calc(100vh-80px)] scroll-smooth">
+
+                <!-- VIEW: DASHBOARD -->
+                <section id="view-dashboard" class="space-y-8 animate-fade-in">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div
+                            class="lg:col-span-2 p-10 rounded-[2.5rem] bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white relative overflow-hidden shadow-xl">
+                            <div class="relative z-10">
+                                <span
+                                    class="px-3 py-1 bg-primary/20 border border-primary/30 rounded-full text-[10px] font-bold uppercase tracking-widest text-primary-light mb-4 inline-block font-sora">Sênior
+                                    Fullstack Developer</span>
+                                <h1 class="text-4xl font-extrabold mb-4 font-sora">Soluções Especialistas <br><span
+                                        class="text-primary">Fintech & Healthtech</span></h1>
+                                <p class="text-slate-400 text-lg max-w-md mb-8 leading-relaxed">Arquitetura de alto
+                                    impacto e segurança máxima para setores de missão crítica.</p>
+                                <button onclick="switchView('projects')"
+                                    class="px-8 py-4 bg-primary text-white rounded-2xl font-bold hover:scale-105 transition-transform flex items-center gap-2 shadow-lg shadow-primary/20">
+                                    <i data-lucide="rocket" class="w-5 h-5"></i> Explorar Portfolio
+                                </button>
+                            </div>
+                            <i data-lucide="activity"
+                                class="absolute -right-10 -bottom-10 w-80 h-80 text-white/5 rotate-12"></i>
+                        </div>
+                        <div
+                            class="bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 flex flex-col justify-between shadow-sm">
+                            <h3 class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-6">Métricas do
+                                Portfolio</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="text-center p-4 bg-slate-50 dark:bg-slate-800 rounded-3xl">
+                                    <p class="text-2xl font-black text-primary">20</p>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase">Cases Reais</p>
+                                </div>
+                                <div class="text-center p-4 bg-slate-50 dark:bg-slate-800 rounded-3xl">
+                                    <p class="text-2xl font-black text-emerald-500">12</p>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase">Artigos</p>
+                                </div>
+                            </div>
+                            <p class="text-[10px] text-slate-400 font-bold mt-4 uppercase px-2">Disponível para novos
+                                desafios</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW: PERFIL -->
+                <section id="view-profile" class="hidden animate-fade-in">
+                    <div
+                        class="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm w-full mx-auto">
+                        <div class="profile-cover"></div>
+                        <div class="px-10 pb-12">
+                            <div class="relative flex justify-between items-end -mt-16 mb-8">
+                                <div
+                                    class="w-32 h-32 rounded-[2.5rem] bg-white dark:bg-slate-900 p-2 shadow-xl border-4 border-slate-50 dark:border-slate-800">
+                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Avatar"
+                                        class="w-full h-full rounded-[2rem] object-cover">
+                                </div>
+                                <button
+                                    class="px-6 py-2.5 bg-primary text-white rounded-xl font-bold text-sm shadow-lg mb-4">Editar
+                                    Perfil</button>
+                            </div>
+                            <h2 class="text-3xl font-bold font-sora text-slate-800 dark:text-white">John Silva</h2>
+                            <p class="text-slate-500 text-lg">Arquiteto de Sistemas Sênior</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW: CONHECIMENTOS (Full Width Grid) -->
+                <section id="view-knowledge" class="hidden space-y-10 animate-fade-in">
+                    <div id="knowledge-categories">
+                        <div class="mb-10">
+                            <h2 class="text-3xl font-bold font-sora mb-2 text-slate-800 dark:text-white">Base de
+                                Conhecimento</h2>
+                            <p class="text-slate-500 text-sm mb-8 font-medium">Explore os temas, selecione uma categoria
+                                e acesse exemplos práticos</p>
+
+                            <div class="flex items-center gap-3 mb-8">
+                                <span
+                                    class="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-xs font-bold text-slate-500 shadow-sm">
+                                    <i data-lucide="layout-grid" class="w-4 h-4"></i> 8 categorias
+                                </span>
+                                <span
+                                    class="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-xs font-bold text-slate-500 shadow-sm">
+                                    <i data-lucide="layers" class="w-4 h-4"></i> 247 exemplos
+                                </span>
+                            </div>
+
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="filterKBCats(this, 'all')"
+                                    class="kb-cat-filter-btn px-6 py-2.5 text-xs font-bold rounded-full bg-primary text-white shadow-lg shadow-primary/20">Todos</button>
+                                <button onclick="filterKBCats(this, 'frontend')"
+                                    class="kb-cat-filter-btn px-6 py-2.5 text-xs font-bold rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-500 hover:text-primary transition-all">Frontend</button>
+                                <button onclick="filterKBCats(this, 'backend')"
+                                    class="kb-cat-filter-btn px-6 py-2.5 text-xs font-bold rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-500 hover:text-primary transition-all">Backend</button>
+                            </div>
+                        </div>
+
+                        <!-- Grid ajustado para 4 a 5 colunas em monitores ultra-wide -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6"
+                            id="kbCatGrid"></div>
+                    </div>
+
+                    <div id="knowledge-items" class="hidden">
+                        <button onclick="backToKBCats()"
+                            class="flex items-center gap-2 text-primary font-bold hover:underline mb-8 font-sora">
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar para Categorias
+                        </button>
+                        <div id="kb-header-meta" class="mb-10"></div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 gap-4"
+                            id="kbItemGrid"></div>
+                    </div>
+                </section>
+
+                <!-- VIEW: PROJETOS (Full Width Grid) -->
+                <section id="view-projects" class="hidden space-y-10 animate-fade-in">
+                    <div id="projects-categories">
+                        <div class="mb-10">
+                            <h2 class="text-3xl font-bold font-sora mb-2 text-slate-800 dark:text-white">Portfolio de
+                                Projetos</h2>
+                            <p class="text-slate-500 font-medium">Cases reais desenvolvidos para Finanças e Saúde.</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" id="projCatGrid"></div>
+                    </div>
+                    <div id="projects-items" class="hidden">
+                        <button onclick="backToProjCats()"
+                            class="flex items-center gap-2 text-primary font-bold hover:underline mb-8 font-sora">
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i> Setores
+                        </button>
+                        <div id="projItemsHeader" class="mb-10"></div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 gap-6"
+                            id="projItemGrid"></div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- MODAL -->
+        <div id="kbModalOverlay"
+            class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300">
+            <div id="kbModalContent"
+                class="bg-white dark:bg-slate-900 w-full max-w-5xl max-h-[90vh] rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col scale-95 transition-all duration-300">
+                <div
+                    class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-white dark:bg-slate-900">
+                    <div class="flex items-center gap-4">
+                        <div id="modalEmoji" class="text-4xl p-2 bg-slate-50 dark:bg-slate-800 rounded-2xl"></div>
+                        <div>
+                            <h2 id="modalName" class="text-xl font-bold font-sora"></h2>
+                            <p id="modalSub" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest"></p>
+                        </div>
+                    </div>
+                    <button onclick="closeKBModal()"
+                        class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"><i
+                            data-lucide="x" class="w-6 h-6"></i></button>
+                </div>
+                <div class="flex bg-slate-50 dark:bg-slate-800/40 p-1 border-b border-slate-100 dark:border-slate-800">
+                    <button onclick="switchKBTab('content', this)"
+                        class="kb-modal-tab flex-1 py-4 text-sm font-bold rounded-xl bg-white dark:bg-slate-900 shadow-sm">Conteúdo</button>
+                    <button onclick="switchKBTab('code', this)"
+                        class="kb-modal-tab flex-1 py-4 text-sm font-bold text-slate-500">Código</button>
+                </div>
+                <div class="flex-1 overflow-y-auto p-12" id="kb-modal-body">
+                    <div id="tab-content" class="space-y-6"></div>
+                    <div id="tab-code" class="hidden"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="overlay" onclick="closeAll()"
+            class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 opacity-0 invisible transition-all-300 lg:hidden">
+        </div>
+    </div>
+
+    <script>
+        const KB_CATEGORIES = [
+            { id: 'react', name: 'React', icon: '⚛️', desc: 'Componentes, hooks, estado e padrões modernos do ecossistema React.', count: 100, tag: 'Frontend', type: 'frontend', color: '#61DAFB', progress: 68 },
+            { id: 'javascript', name: 'JavaScript', icon: '🟨', desc: 'Fundamentos, ES6+, async/await, closures e padrões avançados.', count: 87, tag: 'Frontend', type: 'frontend', color: '#F7DF1E', progress: 45 },
+            { id: 'css', name: 'CSS / Tailwind', icon: '🎨', desc: 'Flexbox, Grid, animações, variáveis CSS e utilitários Tailwind.', count: 35, tag: 'Frontend', type: 'frontend', color: '#38BDF8', progress: 30 },
+            { id: 'nodejs', name: 'Node.js', icon: '🟢', desc: 'APIs RESTful, Express, autenticação e deploy com Node.', count: 28, tag: 'Backend', type: 'backend', color: '#84CC16', progress: 55 },
+            { id: 'sql', name: 'SQL & Banco de Dados', icon: '🗄️', desc: 'Queries, JOINs, índices, ORM e modelagem de dados.', count: 19, tag: 'Database', type: 'database', color: '#A78BFA', progress: 20 },
+            { id: 'typescript', name: 'TypeScript', icon: '🔷', desc: 'Tipos, interfaces, genéricos e integração com React/Node.', count: 31, tag: 'Frontend', type: 'frontend', color: '#3178C6', progress: 72 },
+            { id: 'git', name: 'Git & Versionamento', icon: '🔀', desc: 'Branches, merges, rebase e PR.', count: 14, tag: 'Conceitos', type: 'concepts', color: '#F97316', progress: 90 },
+            { id: 'patterns', name: 'Padrões de Projeto', icon: '🏗️', desc: 'Design patterns aplicados ao JavaScript.', count: 22, tag: 'Conceitos', type: 'concepts', color: '#EC4899', progress: 15 }
+        ];
+
+        const PROJ_CATEGORIES = [
+            { id: 'finance', name: 'Finanças & Fintech', icon: '💰', desc: 'Sistemas de pagamento, auditoria e gateways.', count: 10, color: '#10B981' },
+            { id: 'health', name: 'Saúde & Healthtech', icon: '🏥', desc: 'Prontuários eletrônicos e telemedicina.', count: 10, color: '#6366F1' },
+            { id: 'enterprise', name: 'Corporativo & SaaS', icon: '🏢', desc: 'ERPs, Automação e Business Intelligence.', count: 10, color: '#F59E0B' }
+        ];
+
+        let currentKBCat = null;
+        let currentKBItems = [];
+        let currentProjItems = [];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            switchView('dashboard');
+
+            const sidebar = document.getElementById('sidebar');
+
+            sidebar.addEventListener('mouseenter', () => {
+                if (window.innerWidth >= 1024) {
+                    sidebar.classList.replace('sidebar-collapsed', 'sidebar-expanded');
+                    document.querySelectorAll('.sidebar-text, .sidebar-label, #logo-text').forEach(el => {
+                        el.style.opacity = '1';
+                    });
+                }
+            });
+            sidebar.addEventListener('mouseleave', () => {
+                if (window.innerWidth >= 1024) {
+                    sidebar.classList.replace('sidebar-expanded', 'sidebar-collapsed');
+                    document.querySelectorAll('.sidebar-text, .sidebar-label, #logo-text').forEach(el => {
+                        el.style.opacity = '0';
+                    });
+                }
+            });
+        });
+
+        function switchView(view) {
+            ['dashboard', 'profile', 'knowledge', 'projects'].forEach(s => {
+                const el = document.getElementById(`view-${s}`);
+                if (el) el.classList.add('hidden');
+            });
+
+            const target = document.getElementById(`view-${view}`);
+            if (target) target.classList.remove('hidden');
+
+            const titleEl = document.getElementById('current-page-title');
+            const titles = { dashboard: 'Dashboard', profile: 'Perfil Profissional', knowledge: 'Base de Conhecimento', projects: 'Portfolio de Projetos' };
+            titleEl.textContent = titles[view] || 'Dashboard';
+
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.classList.remove('bg-primary/10', 'text-primary');
+                const svg = btn.querySelector('svg');
+                if (svg) { svg.classList.add('text-slate-500'); svg.classList.remove('text-primary'); }
+            });
+
+            const active = document.querySelector(`.nav-item[data-view="${view}"]`);
+            if (active) {
+                active.classList.add('bg-primary/10', 'text-primary');
+                const svg = active.querySelector('svg');
+                if (svg) { svg.classList.remove('text-slate-500'); svg.classList.add('text-primary'); }
+            }
+
+            if (view === 'knowledge') renderKBCats();
+            if (view === 'projects') renderProjCats();
+            if (window.innerWidth < 1024) closeAll();
+            window.scrollTo(0, 0);
+        }
+
+        function renderKBCats(filter = 'all') {
+            const grid = document.getElementById('kbCatGrid');
+            const list = filter === 'all' ? KB_CATEGORIES : KB_CATEGORIES.filter(c => c.type === filter);
+            grid.innerHTML = list.map(c => `
+                <div class="cat-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 cursor-pointer flex flex-col h-full relative overflow-hidden" 
+                     style="--card-color:${c.color}" onclick="openKBCategory('${c.id}')">
+                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl mb-6 bg-slate-50 dark:bg-slate-800 shadow-sm">${c.icon}</div>
+                    <h3 class="text-xl font-bold mb-3 font-sora">${c.name}</h3>
+                    <p class="text-slate-500 text-xs leading-relaxed mb-8 flex-1">${c.desc}</p>
+                    <div class="flex items-center justify-between mt-auto">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${c.count} exemplos</span>
+                        <span class="text-[9px] font-black px-2 py-0.5 bg-slate-100 dark:bg-slate-800 rounded-full" style="color:${c.color}">${c.tag.toUpperCase()}</span>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-slate-100 dark:bg-slate-800">
+                        <div class="h-full bg-current" style="width:${c.progress}%; background-color:${c.color}"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openKBCategory(id) {
+            currentKBCat = KB_CATEGORIES.find(c => c.id === id);
+            currentKBItems = Array.from({ length: 24 }, (_, i) => ({
+                id: i + 1,
+                name: `${currentKBCat.name} Prática #${i + 1}`,
+                level: ['básico', 'intermediário', 'avançado'][i % 3],
+                time: (i % 5 + 3) + ' min',
+                snippet: `Exemplo estruturado de ${currentKBCat.name} focado em alta performance.`
+            }));
+            document.getElementById('knowledge-categories').classList.add('hidden');
+            document.getElementById('knowledge-items').classList.remove('hidden');
+            document.getElementById('kb-header-meta').innerHTML = `
+                <div class="space-y-4">
+                    <p class="text-slate-500 text-sm max-w-3xl font-medium leading-relaxed">${currentKBCat.desc}</p>
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-xs font-bold text-slate-500 shadow-sm">100 exemplos</span>
+                        <span class="px-3 py-1 bg-indigo-50 dark:bg-indigo-900/20 text-primary text-[10px] font-black rounded-full uppercase tracking-wider">${currentKBCat.tag}</span>
+                    </div>
+                </div>`;
+            renderKBItems();
+        }
+
+        function renderKBItems() {
+            const grid = document.getElementById('kbItemGrid');
+            grid.innerHTML = currentKBItems.map((item, i) => `
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-[2rem] hover:shadow-xl cursor-pointer group relative overflow-hidden" onclick="openKBModal(${i}, false)">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-xl shadow-sm">${currentKBCat.icon}</div>
+                        <span class="text-[10px] font-mono text-slate-300 group-hover:text-primary transition-colors">#${String(item.id).padStart(3, '0')}</span>
+                    </div>
+                    <h4 class="font-bold text-sm mb-2 font-sora group-hover:text-primary transition-colors">${item.name}</h4>
+                    <p class="text-[11px] text-slate-500 line-clamp-2 mb-6">${item.snippet}</p>
+                    <div class="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-slate-800">
+                        <span class="text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider ${getLevelStyle(item.level)}">${item.level}</span>
+                        <span class="text-[10px] text-slate-400 font-bold flex items-center gap-1.5"><i data-lucide="clock" class="w-3.5 h-3.5"></i> ${item.time}</span>
+                    </div>
+                </div>`).join('');
+            lucide.createIcons();
+        }
+
+        function backToKBCats() {
+            document.getElementById('knowledge-categories').classList.remove('hidden');
+            document.getElementById('knowledge-items').classList.add('hidden');
+        }
+
+        function renderProjCats() {
+            const grid = document.getElementById('projCatGrid');
+            grid.innerHTML = PROJ_CATEGORIES.map(c => `
+                <div class="cat-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 cursor-pointer group" onclick="openProjCategory('${c.id}')">
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-6 bg-slate-50 dark:bg-slate-800 shadow-sm transition-colors font-sora">${c.icon}</div>
+                    <h3 class="text-xl font-bold mb-3 font-sora">${c.name}</h3>
+                    <p class="text-slate-500 text-sm mb-6 leading-relaxed">${c.desc}</p>
+                    <span class="text-xs font-bold text-primary flex items-center gap-2 group-hover:translate-x-1 transition-transform">Explorar 10 Projetos <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+                </div>`).join('');
+            lucide.createIcons();
+        }
+
+        function openProjCategory(id) {
+            const cat = PROJ_CATEGORIES.find(c => c.id === id);
+            currentProjItems = Array.from({ length: 10 }, (_, i) => ({
+                id: i + 1,
+                name: id === 'finance' ? `FinPay Pro #${i + 1}` : id === 'health' ? `MediCloud Core #${i + 1}` : `Enterprise SaaS #${i + 1}`,
+                level: i % 2 === 0 ? 'Produção' : 'MVP',
+                snippet: 'Arquitetura focada em conformidade, segurança e alta disponibilidade de dados para o setor.',
+                tech: id === 'finance' ? 'Node, Redis, SQL' : 'React, AWS, IoT'
+            }));
+            document.getElementById('projects-categories').classList.add('hidden');
+            document.getElementById('projects-items').classList.remove('hidden');
+            document.getElementById('projItemsHeader').innerHTML = `<h2 class="text-3xl font-bold font-sora">${cat.icon} ${cat.name}</h2>`;
+            const grid = document.getElementById('projItemGrid');
+            grid.innerHTML = currentProjItems.map((item, i) => `
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-[2rem] hover:shadow-xl cursor-pointer group" onclick="openKBModal(null, true, ${i})">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="text-2xl">${cat.icon}</div>
+                        <span class="text-[10px] font-mono text-slate-300">#${String(item.id).padStart(3, '0')}</span>
+                    </div>
+                    <h4 class="font-bold text-sm mb-2 group-hover:text-primary transition-colors">${item.name}</h4>
+                    <p class="text-[11px] text-slate-500 mb-6 leading-relaxed">${item.snippet}</p>
+                    <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
+                        <span class="text-[9px] font-black px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg uppercase tracking-widest">${item.level}</span>
+                        <span class="text-[9px] font-bold text-primary font-mono">${item.tech}</span>
+                    </div>
+                </div>`).join('');
+        }
+
+        function backToProjCats() {
+            document.getElementById('projects-categories').classList.remove('hidden');
+            document.getElementById('projects-items').classList.add('hidden');
+        }
+
+        function openKBModal(idx, isProj = false, pIdx = 0) {
+            const body = document.getElementById('tab-content');
+            if (isProj) {
+                const item = currentProjItems[pIdx];
+                document.getElementById('modalEmoji').textContent = '📁';
+                document.getElementById('modalName').textContent = item.name;
+                document.getElementById('modalSub').textContent = `PROJETO • ${item.tech}`;
+                body.innerHTML = `<h3 class="font-bold text-xl mb-4 font-sora">Visão Técnica</h3><p class="text-slate-500 leading-relaxed">Este case demonstra proficiência em arquiteturas críticas para o setor. Foco em escalabilidade e segurança de ponta-a-ponta.</p>`;
+            } else {
+                const item = currentKBItems[idx];
+                document.getElementById('modalEmoji').textContent = currentKBCat.icon;
+                document.getElementById('modalName').textContent = item.name;
+                document.getElementById('modalSub').textContent = `CONHECIMENTO • ${item.level.toUpperCase()}`;
+                body.innerHTML = `<p class="text-slate-500 leading-relaxed font-medium">Implementação prática seguindo diretrizes de Clean Code e Performance para ${item.name}.</p>`;
+            }
+            document.getElementById('kbModalOverlay').classList.remove('opacity-0', 'invisible');
+            document.getElementById('kbModalContent').classList.remove('scale-95');
+            document.body.style.overflow = 'hidden';
+            lucide.createIcons();
+        }
+
+        function closeKBModal() {
+            document.getElementById('kbModalOverlay').classList.add('opacity-0', 'invisible');
+            document.getElementById('kbModalContent').classList.add('scale-95');
+            document.body.style.overflow = '';
+        }
+
+        function switchKBTab(tab, btn) {
+            document.querySelectorAll('.kb-modal-tab').forEach(b => {
+                b.classList.remove('bg-white', 'dark:bg-slate-900', 'shadow-sm');
+                b.classList.add('text-slate-500');
+            });
+            btn.classList.add('bg-white', 'dark:bg-slate-900', 'shadow-sm');
+            btn.classList.remove('text-slate-500');
+            document.getElementById('tab-content').classList.toggle('hidden', tab !== 'content');
+            document.getElementById('tab-code').classList.toggle('hidden', tab !== 'code');
+        }
+
+        function getLevelStyle(lvl) {
+            if (lvl === 'básico') return 'bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20';
+            if (lvl === 'intermediário') return 'bg-amber-50 text-amber-600 dark:bg-amber-900/20';
+            return 'bg-violet-50 text-violet-600 dark:bg-violet-900/20';
+        }
+
+        function filterKBCats(btn, val) {
+            document.querySelectorAll('.kb-cat-filter-btn').forEach(b => {
+                b.classList.remove('bg-primary', 'text-white');
+                b.classList.add('bg-white', 'dark:bg-slate-900', 'text-slate-500');
+            });
+            btn.classList.add('bg-primary', 'text-white');
+            renderKBCats(val);
+        }
+
+        function toggleSidebarMobile() {
+            const sb = document.getElementById('sidebar');
+            sb.classList.toggle('mobile-hidden');
+            sb.classList.toggle('mobile-visible');
+        }
+
+        function closeAll() {
+            const sb = document.getElementById('sidebar');
+            sb.classList.add('mobile-hidden');
+            sb.classList.remove('mobile-visible');
+            closeKBModal();
+        }
+
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
+    </script>
+</body>
+
+</html>

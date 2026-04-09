@@ -10,26 +10,32 @@ import Hero from '@/modules/landing/hero';
 import Contact from '@/modules/landing/contact';
 import About from '@/modules/landing/about';
 import Works, { CTA } from '@/modules/landing/works';
+import Header from "@/shared/components/header";
+import Footer from "@/shared/components/footer";
 
 export default function HomePage() {
   return (
     <div className="bg-[#f5f5f5]">
-      {/* Hero section carries the id="hero" internally */}
-      <Hero />
+      <Header />
+      <main style={{ paddingTop: '72px' }}>
+        {/* Hero section carries the id="hero" internally */}
+        <Hero />
 
-      <main className="max-w-[1440px] mx-auto px-6 md:px-10">
-        
-        {/* Section: About */}
-        <About />
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10">
+          
+          {/* Section: About */}
+          <About />
 
-        {/* Section: Works */}
-        <Works />
-        
-        <CTA />
+          {/* Section: Works */}
+          <Works />
+          
+          <CTA />
 
-        {/* Section: Contact */}
-        <Contact />
+          {/* Section: Contact */}
+          <Contact />
+        </div>
       </main>
+      <Footer />
     </div>
   );
 }

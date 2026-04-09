@@ -11,7 +11,7 @@ export const LoginScreen: React.FC = () => {
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
-            setAuthView('success');
+            window.location.href = '/dashboard';
         }, 1500);
     };
 

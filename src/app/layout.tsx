@@ -24,9 +24,7 @@ export default function RootLayout({
       </head>
       <body>
         <AuthProvider>
-          <Header />
-          <main style={{ paddingTop: '72px' }}>{children}</main>
-          <Footer />
+          {children}
         </AuthProvider>
         <Script 
           src="https://unpkg.com/feather-icons" 

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda Pro Elite - Design System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --bg-main: #F8FAFC;
+        }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg-main);
+            color: #1E293B;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+        .day-cell {
+            min-height: 120px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .day-cell:hover {
+            background-color: rgba(241, 245, 249, 0.5);
+            z-index: 10;
+        }
+        .event-chip {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 6px;
+            margin-bottom: 2px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            border: 1px solid rgba(0,0,0,0.05);
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        @media (max-width: 768px) {
+            .day-cell { min-height: 70px; }
+            .event-chip-text { display: none; }
+            .event-chip { width: 8px; height: 8px; padding: 0; border-radius: 50%; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navbar Minimalista -->
+    <nav class="sticky top-0 z-30 w-full glass-effect border-b border-slate-200/60 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-8">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200">
+                        <i data-lucide="layers" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <span class="text-xl font-extrabold tracking-tight text-slate-800">Plan.it</span>
+                </div>
+                
+                <div class="hidden md:flex items-center bg-slate-100/80 p-1 rounded-xl">
+                    <button class="px-4 py-1.5 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-700">Ano</button>
+                    <button class="px-4 py-1.5 text-xs font-bold rounded-lg bg-white shadow-sm text-indigo-600">Mês</button>
+                    <button class="px-4 py-1.5 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-700">Semana</button>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="relative hidden sm:block">
+                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                    <input type="text" placeholder="Buscar eventos..." class="bg-slate-100 border-none rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-indigo-500/20 w-64 transition-all">
+                </div>
+                <button class="p-2 text-slate-400 hover:text-slate-600 relative">
+                    <i data-lucide="bell" class="w-5 h-5"></i>
+                    <span class="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border-2 border-white"></span>
+                </button>
+                <div class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden border border-slate-300">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto p-4 md:p-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            
+            <!-- Calendário Section -->
+            <div class="lg:col-span-9">
+                <!-- Toolbar do Calendário -->
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-4">
+                        <h2 class="text-2xl font-extrabold text-slate-800">Outubro <span class="text-slate-300 font-medium">2024</span></h2>
+                        <div class="flex gap-1">
+                            <button class="p-2 hover:bg-white hover:shadow-sm rounded-lg transition-all text-slate-500"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+                            <button class="p-2 hover:bg-white hover:shadow-sm rounded-lg transition-all text-slate-500"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+                        </div>
+                    </div>
+                    <button class="text-xs font-bold uppercase tracking-widest text-indigo-600 bg-indigo-50 px-4 py-2 rounded-lg hover:bg-indigo-100 transition-colors">Hoje</button>
+                </div>
+
+                <div class="bg-white rounded-[40px] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+                    <!-- Dias da Semana Header -->
+                    <div class="calendar-grid border-b border-slate-50 bg-slate-50/30">
+                        <div class="py-4 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">Dom</div>
+                        <div class="py-4 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">Seg</div>
+                        <div class="py-4 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">Ter</div>
+                        <div class="py-4 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">Qua</div>
+                        <div class="py-4 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">Qui</div>
+                        <div class="py-4 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">Sex</div>
+                        <div class="py-4 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">Sáb</div>
+                    </div>
+
+                    <!-- Grid de Dias -->
+                    <div class="calendar-grid">
+                        <!-- Offset -->
+                        <div class="day-cell border-r border-b border-slate-50/80 bg-slate-50/10"></div>
+                        <div class="day-cell border-r border-b border-slate-50/80 bg-slate-50/10"></div>
+
+                        <!-- Dias Ativos -->
+                        <!-- Dia com muitos eventos -->
+                        <div class="day-cell border-r border-b border-slate-50/80 p-2 flex flex-col group cursor-pointer" onclick="toggleModal()">
+                            <span class="text-sm font-bold text-slate-400 mb-2 group-hover:text-indigo-600">01</span>
+                            <div class="space-y-1">
+                                <div class="event-chip bg-emerald-50 text-emerald-600 border-emerald-100">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                                    <span class="event-chip-text">Review Design</span>
+                                </div>
+                                <div class="event-chip bg-blue-50 text-blue-600 border-blue-100">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                                    <span class="event-chip-text">Daily Sync</span>
+                                </div>
+                                <div class="event-chip bg-purple-50 text-purple-600 border-purple-100">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-purple-500"></div>
+                                    <span class="event-chip-text">Yoga Class</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hoje -->
+                        <div class="day-cell border-r border-b border-slate-50/80 p-2 flex flex-col bg-indigo-50/20 group cursor-pointer relative" onclick="toggleModal()">
+                            <div class="absolute top-2 left-2 flex items-center justify-center w-8 h-8 rounded-2xl bg-indigo-600 text-white text-sm font-extrabold shadow-lg shadow-indigo-200">02</div>
+                            <div class="mt-10 space-y-1">
+                                <div class="event-chip bg-indigo-600 text-white border-transparent">
+                                    <span class="event-chip-text">Lançamento v2</span>
+                                </div>
+                                <div class="event-chip bg-amber-50 text-amber-600 border-amber-100">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
+                                    <span class="event-chip-text">Jantar Equipe</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Preenchimento Automático via Script -->
+                        <script>
+                            const grid = document.currentScript.parentElement;
+                            for(let i=3; i<=31; i++) {
+                                const div = document.createElement('div');
+                                div.className = `day-cell border-r border-b border-slate-50/80 p-2 flex flex-col group cursor-pointer`;
+                                div.onclick = () => toggleModal();
+                                div.innerHTML = `<span class="text-sm font-bold text-slate-400 group-hover:text-indigo-600 transition-colors">${i < 10 ? '0'+i : i}</span>`;
+                                grid.appendChild(div);
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar Info -->
+            <aside class="lg:col-span-3 space-y-8">
+                <!-- Botão de Ação Primária -->
+                <button onclick="toggleModal()" class="w-full bg-slate-900 text-white p-5 rounded-[24px] font-bold flex items-center justify-center gap-3 shadow-2xl shadow-slate-200 hover:bg-indigo-600 transition-all active:scale-95 group">
+                    <i data-lucide="plus" class="w-5 h-5 group-hover:rotate-90 transition-transform"></i>
+                    Novo Evento
+                </button>
+
+                <!-- Daily Agenda -->
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between px-2">
+                        <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">Cronograma</h3>
+                        <i data-lucide="calendar-range" class="w-4 h-4 text-slate-400"></i>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm space-y-6">
+                        <div class="flex gap-4 group cursor-pointer">
+                            <div class="flex flex-col items-center">
+                                <span class="text-[10px] font-bold text-slate-400">09:00</span>
+                                <div class="w-0.5 h-full bg-slate-100 my-1 rounded-full group-hover:bg-indigo-200 transition-colors"></div>
+                            </div>
+                            <div class="pb-4">
+                                <h4 class="text-sm font-bold text-slate-700 group-hover:text-indigo-600 transition-colors">Sprint Planning</h4>
+                                <p class="text-xs text-slate-400 mt-0.5">Marketing Room</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4 group cursor-pointer">
+                            <div class="flex flex-col items-center">
+                                <span class="text-[10px] font-bold text-slate-400">11:30</span>
+                                <div class="w-0.5 h-full bg-slate-100 my-1 rounded-full group-hover:bg-amber-200 transition-colors"></div>
+                            </div>
+                            <div class="pb-4">
+                                <h4 class="text-sm font-bold text-slate-700 group-hover:text-amber-600 transition-colors">Meeting UI/UX</h4>
+                                <p class="text-xs text-slate-400 mt-0.5">Zoom Call</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4 group cursor-pointer">
+                            <div class="flex flex-col items-center">
+                                <span class="text-[10px] font-bold text-slate-400">14:00</span>
+                                <div class="w-0.5 h-10 bg-slate-100 my-1 rounded-full"></div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-700">Workshop</h4>
+                                <p class="text-xs text-slate-400 mt-0.5">Auditório</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estatísticas/Info -->
+                <div class="bg-indigo-600 p-6 rounded-[32px] text-white shadow-xl shadow-indigo-100 relative overflow-hidden group">
+                    <div class="relative z-10">
+                        <p class="text-indigo-200 text-[10px] font-black uppercase tracking-[0.2em] mb-2">Produtividade</p>
+                        <h4 class="text-xl font-bold leading-tight">85% das suas metas concluídas</h4>
+                        <div class="mt-4 h-1.5 w-full bg-white/20 rounded-full overflow-hidden">
+                            <div class="h-full bg-white w-[85%] rounded-full"></div>
+                        </div>
+                    </div>
+                    <i data-lucide="trending-up" class="absolute -right-4 -bottom-4 w-24 h-24 text-white/10 -rotate-12 group-hover:scale-110 transition-transform"></i>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Modal Premium de Agendamento -->
+    <div id="addEventModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-md transition-opacity"></div>
+        
+        <div class="bg-white w-full max-w-lg rounded-[48px] shadow-2xl relative z-10 overflow-hidden transform transition-all scale-95 opacity-0 duration-500" id="modalBody">
+            <div class="p-10">
+                <div class="flex justify-between items-start mb-10">
+                    <div>
+                        <h3 class="text-3xl font-black text-slate-800 tracking-tight">Novo Evento</h3>
+                        <p class="text-slate-400 text-sm mt-1">Defina seus próximos passos</p>
+                    </div>
+                    <button onclick="toggleModal()" class="p-3 bg-slate-50 hover:bg-slate-100 rounded-2xl transition-all">
+                        <i data-lucide="x" class="w-5 h-5 text-slate-400"></i>
+                    </button>
+                </div>
+
+                <form class="space-y-8">
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Assunto do Evento</label>
+                        <input type="text" placeholder="Ex: Brainstorming de Produto" class="w-full bg-slate-50 border-none rounded-2xl py-5 px-6 text-lg font-bold placeholder:text-slate-300 focus:ring-4 focus:ring-indigo-500/10 transition-all">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="space-y-3">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Horário Início</label>
+                            <div class="relative">
+                                <i data-lucide="clock" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300"></i>
+                                <input type="time" class="w-full bg-slate-50 border-none rounded-2xl py-4 pl-14 pr-6 font-bold focus:ring-4 focus:ring-indigo-500/10">
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Localização</label>
+                            <div class="relative">
+                                <i data-lucide="map-pin" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300"></i>
+                                <input type="text" placeholder="Sala ou Link" class="w-full bg-slate-50 border-none rounded-2xl py-4 pl-14 pr-6 font-bold focus:ring-4 focus:ring-indigo-500/10">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Prioridade e Cor</label>
+                        <div class="flex items-center gap-4 bg-slate-50 p-6 rounded-[28px]">
+                            <button type="button" class="w-12 h-12 rounded-2xl bg-indigo-500 shadow-lg shadow-indigo-200 ring-4 ring-white"></button>
+                            <button type="button" class="w-10 h-10 rounded-2xl bg-emerald-400 hover:scale-110 transition-all"></button>
+                            <button type="button" class="w-10 h-10 rounded-2xl bg-amber-400 hover:scale-110 transition-all"></button>
+                            <button type="button" class="w-10 h-10 rounded-2xl bg-rose-400 hover:scale-110 transition-all"></button>
+                            <div class="h-8 w-[1px] bg-slate-200 mx-2"></div>
+                            <button type="button" class="text-slate-400 hover:text-indigo-600 transition-colors"><i data-lucide="palette" class="w-6 h-6"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4 pt-4">
+                        <button type="button" onclick="toggleModal()" class="flex-1 py-5 text-slate-400 font-extrabold hover:text-slate-600 transition-all">Descartar</button>
+                        <button type="button" onclick="toggleModal()" class="flex-[2] bg-slate-900 text-white py-5 rounded-[24px] font-extrabold shadow-2xl shadow-slate-200 hover:bg-indigo-600 transition-all active:scale-95">Confirmar Agendamento</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Init Lucide Icons
+        lucide.createIcons();
+
+        function toggleModal() {
+            const modal = document.getElementById('addEventModal');
+            const body = document.getElementById('modalBody');
+            
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    body.classList.remove('scale-95', 'opacity-0');
+                    body.classList.add('scale-100', 'opacity-100');
+                }, 50);
+            } else {
+                body.classList.remove('scale-100', 'opacity-100');
+                body.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 500);
+            }
+        }
+    </script>
+</body>
+</html>
