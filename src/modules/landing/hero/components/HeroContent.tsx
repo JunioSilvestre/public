@@ -7,6 +7,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../Hero.module.css';
 import { HERO_CONFIG } from '../hero.config';
+import { Eye } from 'lucide-react';
 
 export const HeroContent: React.FC = () => {
   const [displayText, setDisplayText] = useState('');
@@ -45,7 +46,7 @@ export const HeroContent: React.FC = () => {
 
       <div className={`${styles.ctaRow} animate-in`}>
         <button className={styles.ctaPrimary}>
-          <span className="material-symbols-outlined">{HERO_CONFIG.ctas.primary.icon}</span>
+          <Eye size={18} className="mr-2" />
           {HERO_CONFIG.ctas.primary.label}
         </button>
         <button className={styles.ctaSecondary}>

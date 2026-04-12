@@ -6,23 +6,12 @@
  */
 "use client";
 
-import dynamic from 'next/dynamic';
 import Hero from '@/modules/landing/hero';
+import Contact from '@/modules/landing/contact';
+import About from '@/modules/landing/about';
+import Works, { CTA } from '@/modules/landing/works';
 import Header from "@/shared/components/header";
 import Footer from "@/shared/components/footer";
-
-const Contact = dynamic(() => import('@/modules/landing/contact'), {
-  loading: () => <div className="h-96 animate-pulse bg-slate-100 rounded-3xl mb-8" />
-});
-const About = dynamic(() => import('@/modules/landing/about'), {
-  loading: () => <div className="h-96 animate-pulse bg-slate-100 rounded-3xl mb-8" />
-});
-const Works = dynamic(() => import('@/modules/landing/works'), {
-  loading: () => <div className="h-96 animate-pulse bg-slate-100 rounded-3xl mb-8" />
-});
-const CTA = dynamic(() => import('@/modules/landing/works').then(mod => mod.CTA), {
-  ssr: false
-});
 
 export default function HomePage() {
   return (
