@@ -33,7 +33,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
             <main className="flex-1 flex flex-col min-w-0 transition-all duration-300 ease-in-out">
                 <Header toggleSidebarMobile={toggleSidebarMobile} />
-                <div className="p-6 md:p-10 space-y-8 overflow-y-auto max-h-[calc(100vh-80px)] scroll-smooth">
+                <div className="p-4 sm:p-6 md:p-8 lg:p-10 space-y-8 overflow-y-auto max-h-[calc(100vh-64px)] sm:max-h-[calc(100vh-72px)] scroll-smooth">
                     {children}
                 </div>
             </main>

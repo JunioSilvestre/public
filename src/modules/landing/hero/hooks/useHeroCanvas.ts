@@ -110,16 +110,30 @@ export function useHeroCanvas() {
     };
 
     let animationId: number;
+    let isVisible = true;
+
     const animate = () => {
+      if (!isVisible) return;
       drawNetwork();
       drawPackets();
       animationId = requestAnimationFrame(animate);
     };
+
+    const observer = new IntersectionObserver((entries) => {
+      isVisible = entries[0].isIntersecting;
+      if (isVisible) {
+        cancelAnimationFrame(animationId);
+        animate();
+      }
+    }, { threshold: 0 });
+
+    observer.observe(canvas);
     animate();
 
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener('resize', resize);
+      observer.disconnect();
     };
   }, []);
 

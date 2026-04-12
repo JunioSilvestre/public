@@ -129,7 +129,10 @@ const Works: React.FC = () => {
       }
     };
 
+    let isVisible = false;
+
     const frame = () => {
+      if (!isVisible) return;
       animationFrameId = requestAnimationFrame(frame);
       g.clearRect(0, 0, cv.width, cv.height);
       g.save(); g.scale(dpr, dpr);
@@ -177,11 +180,22 @@ const Works: React.FC = () => {
 
       t++; g.restore();
     };
+
+    const observer = new IntersectionObserver((entries) => {
+      isVisible = entries[0].isIntersecting;
+      if (isVisible) {
+        cancelAnimationFrame(animationFrameId);
+        frame();
+      }
+    }, { threshold: 0.1 });
+
+    observer.observe(cv);
     frame();
 
     return () => {
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(animationFrameId);
+      observer.disconnect();
     };
   }, []);
 
@@ -227,7 +241,10 @@ const Works: React.FC = () => {
       { label: 'Approved ✓', sub: 'Looks good', y: .8, tc: '#059669', bg: '#d1fae5', bd: '#6ee7b7', icon: '✓' },
     ];
 
+    let isVisible = false;
+
     const frame = () => {
+      if (!isVisible) return;
       animationFrameId = requestAnimationFrame(frame);
       g.clearRect(0, 0, cv.width, cv.height);
       g.save(); g.scale(dpr, dpr);
@@ -297,11 +314,22 @@ const Works: React.FC = () => {
 
       t++; g.restore();
     };
+
+    const observer = new IntersectionObserver((entries) => {
+      isVisible = entries[0].isIntersecting;
+      if (isVisible) {
+        cancelAnimationFrame(animationFrameId);
+        frame();
+      }
+    }, { threshold: 0.1 });
+
+    observer.observe(cv);
     frame();
 
     return () => {
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(animationFrameId);
+      observer.disconnect();
     };
   }, []);
 

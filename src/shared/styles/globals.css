@@ -45,6 +45,10 @@ body {
 }
 
 main {
-  max-width: 1440px;
   margin: 0 auto;
+}
+
+/* Landing page max-width — does NOT apply inside the dashboard shell */
+main:not(.dashboard-main) {
+  max-width: 1440px;
 }

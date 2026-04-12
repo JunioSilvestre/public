@@ -6,34 +6,25 @@
  * @description Interactive contact section with a form and support information.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { Mail, Phone, MapPin, Send, CheckCircle, Link as LinkIcon, Code, Camera } from 'lucide-react';
 import styles from './Contact.module.css';
 import { CONTACT_CONFIG } from './contact.config';
+
+const iconMap: Record<string, React.ReactNode> = {
+  'mail': <Mail className="w-5 h-5" />,
+  'phone': <Phone className="w-5 h-5" />,
+  'map-pin': <MapPin className="w-5 h-5" />,
+  'send': <Send className="w-5 h-5" />,
+  'check-circle': <CheckCircle className="w-5 h-5" />,
+  'fa-brands fa-linkedin': <LinkIcon className="w-5 h-5" />,
+  'fa-brands fa-github': <Code className="w-5 h-5" />,
+  'fa-brands fa-instagram': <Camera className="w-5 h-5" />
+};
 
 export const Contact: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  // Initialize Feather Icons if available
-  useEffect(() => {
-    const replaceIcons = () => {
-      // @ts-ignore
-      if (typeof window !== 'undefined' && window.feather) {
-        // @ts-ignore
-        window.feather.replace();
-      }
-    };
-
-    replaceIcons();
-    // Retry after a short delay to ensure CDN script loaded
-    const timer = setTimeout(replaceIcons, 1000);
-    const interval = setInterval(replaceIcons, 3000); // Extra safety interval
-    
-    return () => {
-      clearTimeout(timer);
-      clearInterval(interval);
-    };
-  }, [isSubmitted]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,7 +61,7 @@ export const Contact: React.FC = () => {
             {Object.entries(CONTACT_CONFIG.info).map(([key, item]) => (
               <div key={key} className={styles.infoItem}>
                 <div className={styles.iconBox}>
-                  <i data-feather={item.icon} className="w-5 h-5"></i>
+                  {iconMap[item.icon] || <Mail className="w-5 h-5" />}
                 </div>
                 <div>
                   <p className={styles.infoLabel}>{item.label}</p>
@@ -96,7 +87,7 @@ export const Contact: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className={social.icon}></i>
+                  {iconMap[social.icon] || <LinkIcon className="w-5 h-5" />}
                 </a>
               ))}
             </div>
@@ -147,10 +138,10 @@ export const Contact: React.FC = () => {
               {isLoading ? (
                 <span>Sending...</span>
               ) : (
-                <>
+                <div className="flex items-center gap-2">
                   <span>{CONTACT_CONFIG.form.submitLabel}</span>
-                  <i data-feather="send" className="w-5 h-5"></i>
-                </>
+                  <Send className="w-5 h-5" />
+                </div>
               )}
             </button>
           </form>
@@ -158,7 +149,7 @@ export const Contact: React.FC = () => {
           {/* Success Message */}
           <div className={`${styles.success} ${!isSubmitted ? styles.hidden : ''}`}>
              <div className={styles.successIcon}>
-               <i data-feather="check-circle" className="w-16 h-16 mx-auto"></i>
+               <CheckCircle className="w-16 h-16 mx-auto text-emerald-500" />
              </div>
              <h3 className={styles.successTitle}>{CONTACT_CONFIG.form.successMsg.title}</h3>
              <p className={styles.successText}>{CONTACT_CONFIG.form.successMsg.sub}</p>
